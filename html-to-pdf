@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# html-to-pdf — export an HTML CV or cover letter to PDF with clickable links
+# Requires: node bin/package.json dependencies (run `npm install` in bin/ once)
+#
+# Usage:
+#   ./html-to-pdf <path-to-cv.html>
+#
+# Example:
+#   ./html-to-pdf jobs/nab-senior_frontend_engineer/2026-04-10_22-28/html-cv/cv\(modern\).html
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ -z "$1" ]]; then
+  echo "Usage: ./html-to-pdf <path-to-html>"
+  exit 1
+fi
+
+node "$SCRIPT_DIR/bin/build-cv.js" "$1"

@@ -1,0 +1,8 @@
+.vscode/*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PDF export dependencies
+bin/node_modules/

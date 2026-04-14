@@ -1,0 +1,219 @@
+/* ── Modern Cover Letter Theme ───────────────────────────────────────────────
+ * Stacked header (name right + full-width contact strip) · Prose body
+ * Color palette and font stack identical to modern/style.css (CV theme).
+ * Font: Inter + Plus Jakarta Sans via Google Fonts CDN.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Color palette ──────────────────────────────────────────────────────── */
+:root {
+  --primary:     #004d75;   /* name, salutation, signature                     */
+  --primary-c:   #006699;   /* contact strip background, icons                 */
+  --secondary:   #5e5e5e;   /* role subtitle, body text, recipient info        */
+  --on-surface:  #1b1c1c;   /* date, strong text                               */
+  --outline:     #c0c7d0;   /* decorative lines, footer                        */
+  --white:       #ffffff;
+  --page-margin: 12mm;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── Page setup ─────────────────────────────────────────────────────────── */
+@page { size: A4; margin: var(--page-margin) 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, Helvetica, sans-serif;
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--secondary);
+  background: var(--white);
+}
+
+.page {
+  max-width: 210mm;
+  min-height: 297mm;
+  padding: var(--page-margin);
+  margin: 0 auto;
+}
+
+@media print {
+  body { margin: 0; background: none; }
+  .page { padding: 0 var(--page-margin); max-width: 100%; }
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Header — stacked: name-block (right) + full-width contact strip ──────── */
+.letter-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14pt;
+}
+
+/* Name block — right-aligned; role appears first (above) in HTML */
+.letter-name-block {
+  text-align: right;
+  padding-bottom: 8pt;
+}
+
+.letter-role {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 3pt;
+}
+
+.letter-name {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 28pt;
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.5px;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+/* Contact strip — full-width dark bar, bleeds past page horizontal padding */
+.letter-contact-strip {
+  position: relative;
+  background: var(--primary-c);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4pt var(--page-margin);
+  margin: 0 calc(-1 * var(--page-margin));
+}
+
+/* Two short horizontal accent lines above and below the strip */
+.letter-contact-strip::before,
+.letter-contact-strip::after {
+  content: '';
+  position: absolute;
+  height: 1.5pt;
+  width: 90pt;
+  background: var(--outline);
+}
+.letter-contact-strip::before {
+  top: -7pt;
+  left: 0;
+}
+.letter-contact-strip::after {
+  bottom: -7pt;
+  right: 0;
+}
+
+.letter-contact-strip .contact-item {
+  color: var(--white);
+  font-size: 8.5pt;
+}
+
+.letter-contact-strip .contact-icon {
+  fill: var(--white);
+}
+
+.letter-contact-strip a {
+  color: var(--white);
+}
+
+/* ── Contact item (shared base) ─────────────────────────────────────────── */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6pt;
+  font-size: 8.5pt;
+}
+
+.contact-icon {
+  width: 13px;
+  height: 13px;
+  fill: var(--primary-c);
+  flex-shrink: 0;
+}
+
+/* ── Date ────────────────────────────────────────────────────────────────── */
+.letter-date {
+  text-align: right;
+  font-size: 8pt;
+  font-weight: 500;
+  color: var(--outline);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 14pt;
+  margin-bottom: 14pt;
+}
+
+/* ── Recipient ───────────────────────────────────────────────────────────── */
+.letter-recipient {
+  margin-bottom: 14pt;
+}
+
+.letter-recipient-name {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.letter-recipient-detail {
+  font-size: 9pt;
+  color: var(--secondary);
+  line-height: 1.5;
+}
+
+/* ── Salutation ──────────────────────────────────────────────────────────── */
+.letter-salutation {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12pt;
+}
+
+/* ── Letter body ─────────────────────────────────────────────────────────── */
+.letter-body {
+  color: var(--secondary);
+  font-size: 9.5pt;
+  line-height: 1.8;
+}
+
+.letter-paragraph {
+  margin-bottom: 12pt;
+}
+
+/* ── Closing ─────────────────────────────────────────────────────────────── */
+.letter-closing {
+  margin-top: 28pt;
+}
+
+.letter-sign-off {
+  font-size: 9.5pt;
+  color: var(--secondary);
+  margin-bottom: 24pt;   /* space for physical/digital signature */
+}
+
+.letter-signature {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ── Footer decoration ───────────────────────────────────────────────────── */
+.letter-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0.5pt solid var(--outline);
+  padding-top: 8pt;
+  margin-top: 28pt;
+  opacity: 0.4;
+}
+
+.letter-footer-label {
+  font-size: 6pt;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--outline);
+}

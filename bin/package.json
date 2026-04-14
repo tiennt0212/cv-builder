@@ -1,0 +1,8 @@
+{
+  "name": "html-to-pdf",
+  "version": "1.0.0",
+  "description": "Export HTML CV/letter to PDF with clickable links via Puppeteer",
+  "dependencies": {
+    "puppeteer": "^22.0.0"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(date *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(npm *)",
+      "Bash(node *)",
+      "Bash(wc *)",
+      "Bash(cat *)",
+      "Bash(wslview *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/mkdir-jobs.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/validate-company-slug.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

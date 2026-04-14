@@ -1,0 +1,81 @@
+\documentclass[11pt, a4paper]{article}
+
+% ── Fonts (EB Garamond via Overleaf TeX Live — no font upload required) ──────
+% Compile with XeLaTeX on Overleaf (Menu → Compiler → XeLaTeX)
+\usepackage{fontspec}
+\setmainfont{EB Garamond}
+
+\usepackage[margin=1in, top=0.75in, bottom=0.75in, left=0.9in, right=0.9in]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% ── Section heading: hrule above, bold centered title ───────────────────────
+\newcommand{\ressection}[1]{%
+  \vspace{14pt}%
+  \hrule height 0.4pt%
+  \vspace{8pt}%
+  {\centering\textbf{\large #1}\par}%
+  \vspace{6pt}%
+}
+
+% ── Experience entry ─────────────────────────────────────────────────────────
+% With location: \jobentry{Company}{Location}{Title}{Dates}
+% Use when location adds signal (foreign company, remote, multi-office)
+\newcommand{\jobentry}[4]{%
+  \noindent\textbf{#1} \hfill \textcolor[gray]{0.4}{#2}\par\vspace{-2pt}%
+  \noindent\textbf{#3} \hfill \textcolor[gray]{0.4}{#4}\par\vspace{1pt}%
+}
+
+% Without location: \jobentrynoloc{Company}{Title}{Dates}
+% Default — all on one line: Company (bold) --- Title (normal weight), Dates right-aligned
+% \par at end is critical — without it the next content continues inline
+\newcommand{\jobentrynoloc}[3]{%
+  \noindent\textbf{#1} --- #2 \hfill \textcolor[gray]{0.4}{#3}\par\vspace{1pt}%
+}
+
+% ── Sub-project within a company ─────────────────────────────────────────────
+% Use when a company has multiple named projects; order sub-projects by JD relevance
+% No trailing \vspace — topsep=3pt on the following itemize provides the gap
+% With dates: \subproject{Project Name}{Dates}
+\newcommand{\subproject}[2]{%
+  \vspace{3pt}%
+  \noindent\textit{#1} \hfill \textcolor[gray]{0.4}{#2}\par%
+}
+% Without dates: \subprojectnodates{Project Name}
+\newcommand{\subprojectnodates}[1]{%
+  \vspace{3pt}%
+  \noindent\textit{#1}\par%
+}
+
+% ── Bullet list defaults ─────────────────────────────────────────────────────
+\setlist[itemize]{
+  leftmargin = 1em,
+  itemsep    = 0pt,
+  topsep     = 3pt,
+  parsep     = 0pt,
+  label      = \textbullet,
+}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% [HEADER — centered name + contact line; see SKILL.md for field order]
+
+% [PROFESSIONAL SUMMARY — \ressection{PROFESSIONAL SUMMARY} + summary paragraph]
+
+% [CORE COMPETENCIES — \ressection{CORE COMPETENCIES} + bullet-separated phrases; omit entirely if not in seed]
+
+% [PROFESSIONAL EXPERIENCE — \ressection{PROFESSIONAL EXPERIENCE} + job entries using \jobentrynoloc or \jobentry + \subproject / \subprojectnodates where applicable]
+
+% [SKILLS — \ressection{SKILLS} + category lines]
+
+% [EDUCATION \& CERTIFICATIONS — \ressection{EDUCATION \& CERTIFICATIONS} + degree then certifications]
+
+% [AWARDS \& PUBLICATIONS — \ressection{AWARDS \& PUBLICATIONS} + entries; omit entirely if not in seed]
+
+\end{document}

@@ -1,0 +1,403 @@
+/* ── Modern CV Theme (Stitch-accurate) ──────────────────────────────────────
+ * Stacked header (name right + full-width contact strip) · Timeline experience · Pill skills
+ * Spacing and font ratios mapped directly from Stitch Tailwind values.
+ * Font: Inter (all weights) via Google Fonts CDN.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Color palette ──────────────────────────────────────────────────────── */
+:root {
+  --primary:     #004d75;   /* name, section headings                          */
+  --primary-c:   #006699;   /* role, company names, icons, L-bracket           */
+  --secondary:   #5e5e5e;   /* body text, bullet text                          */
+  --on-surface:  #1b1c1c;   /* job titles (role), degree titles                */
+  --surface-low: #f0f4f7;   /* skill pill backgrounds                          */
+  --outline:     #c0c7d0;   /* timeline border (at 30% opacity)                */
+  --white:       #ffffff;
+  --page-margin: 12mm;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── Page setup ─────────────────────────────────────────────────────────── */
+@page { size: A4; margin: var(--page-margin) 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, Helvetica, sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  color: var(--secondary);
+  background: var(--white);
+}
+
+/* Stitch: .a4-container { padding: var(--page-margin) } */
+.page {
+  max-width: 210mm;
+  min-height: 297mm;
+  padding: var(--page-margin);
+  margin: 0 auto;
+}
+
+@media print {
+  body { margin: 0; background: none; }
+  .page { padding: 0 var(--page-margin); max-width: 100%; }
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Header — vertical stack: name-block (right) + full-width contact strip ── */
+.cv-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12pt;
+}
+
+/* Name block — right-aligned; role appears first (above) in HTML */
+.cv-name-block {
+  text-align: right;
+  padding-bottom: 8pt;
+}
+
+.cv-role {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 3pt;
+}
+
+.cv-name {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 28pt;          /* Stitch 56px scaled for print */
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.5px;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+/* Contact strip — full-width dark bar, bleeds past page horizontal padding */
+/* ::before/::after are decorative two-line accent above-left of the strip  */
+.cv-contact-strip {
+  position: relative;
+  background: var(--primary);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4pt var(--page-margin);
+  margin: 0 calc(-1 * var(--page-margin));
+}
+
+/* Two short horizontal accent lines above the strip, aligned to content edge */
+.cv-contact-strip::before,
+.cv-contact-strip::after {
+  content: '';
+  position: absolute;
+  height: 1.5pt;
+  width: 90pt;
+  background: var(--outline);
+}
+.cv-contact-strip::before {
+  top: -7pt;
+  left: 0;
+}
+.cv-contact-strip::after {
+  bottom: -7pt;
+  right: 0;
+}
+
+.cv-contact-strip .contact-item {
+  color: var(--white);
+  font-size: 8.5pt;
+}
+
+.cv-contact-strip .contact-icon {
+  fill: var(--white);
+}
+
+.cv-contact-strip a {
+  color: var(--white);
+}
+
+/* ── Contact item (shared base) ─────────────────────────────────────────── */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6pt;
+  color: var(--secondary);
+  font-size: 8.5pt;
+}
+
+.contact-icon {
+  width: 13px;
+  height: 13px;
+  fill: var(--primary-c);
+  flex-shrink: 0;
+}
+
+/* ── Body wrapper ────────────────────────────────────────────────────────── */
+.cv-body { }
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+.cv-section {
+  margin-bottom: 12pt;
+}
+
+/* L-bracket ── Stitch: .l-bracket::before { top:-4px; left:-12px; 12×12px } */
+.section-heading {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12pt;          /* Stitch text-lg = 18px = 13.5pt; use 12pt for print */
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;      /* Stitch tracking-widest */
+  position: relative;
+  margin-bottom: 4pt;
+}
+
+.section-heading::before {
+  content: '';
+  position: absolute;
+  bottom: 70%;                 /* offset below line box top to align with cap-height */
+  left: -7px;
+  width: 8px;              /* Stitch: width: 12px */
+  height: 8px;             /* Stitch: height: 12px */
+  border-top: 1px solid var(--primary-c);
+  border-left: 1px solid var(--primary-c);
+}
+
+/* ── Summary — plain text, no background box ─────────────────────────────── */
+.summary {
+  font-size: 8.5pt;
+  line-height: 1.5;
+  color: var(--secondary);
+}
+
+/* ── Core Competencies ──────────────────────────────────────────────────── */
+.competencies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4pt 5pt;
+}
+
+.competency-tag {
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--primary-c);
+  background: var(--surface-low);
+  padding: 2pt 7pt;
+  border-radius: 20pt;
+}
+
+/* ── Experience — timeline ────────────────────────────────────────────────
+ * Stitch: space-y-8 (32px=24pt) between entries
+ *         pl-6 (24px=18pt) padding-left
+ *         border-l border-outline-variant/30
+ *         dot: absolute w-3 h-3 (12px) rounded-full -left-[6.5px] top-1 (4px)
+ * ─────────────────────────────────────────────────────────────────────── */
+.job-entry {
+  position: relative;
+  padding-left: 8pt;                       /* pl-6 = 24px = 18pt */
+  border-left: 1.5px solid rgba(192, 199, 208, 0.3);  /* outline-variant/30 */
+  margin-bottom: 12pt;
+  margin-left: -8pt;
+}
+
+.job-entry:last-child { margin-bottom: 0; }
+
+/* Circle dot — Stitch: w-3 h-3 rounded-full -left-[6.5px] top-1 */
+.job-entry::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-c);
+  border-radius: 50%;
+  left: -4.5px;
+  top: 6px;
+}
+
+/* Single-row entry header: [Company — Title] left · [Location  Dates] right */
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8pt;
+  margin-bottom: 5pt;
+}
+
+.job-meta-left {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.job-meta-right {
+  display: flex;
+  align-items: baseline;
+  gap: 6pt;
+  flex-shrink: 0;
+}
+
+.job-company {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 10.5pt;
+  color: var(--primary-c);
+  white-space: nowrap;
+}
+
+/* Em-dash separator between company and title */
+.job-company::after {
+  content: ' —';
+  color: var(--outline);
+  font-weight: 400;
+  margin-right: 5pt;
+}
+
+.job-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 9.5pt;
+  color: var(--on-surface);
+}
+
+.job-location {
+  font-size: 8pt;
+  color: var(--outline);
+  white-space: nowrap;
+}
+
+.job-dates {
+  font-size: 8pt;
+  font-weight: 700;
+  color: var(--secondary);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: -0.2px;
+}
+
+/* Project sub-headers within a job entry */
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 4pt;
+  margin-bottom: 4pt;
+}
+
+.project-title {
+  font-weight: 600;
+  color: var(--primary-c);
+  font-size: 9.5pt;
+}
+
+.project-title strong {
+  font-weight: inherit;
+}
+
+.project-dates {
+  font-size: 8pt;
+  color: var(--secondary);
+  white-space: nowrap;
+  margin-left: 8pt;
+}
+
+ul.bullets {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4pt;
+}
+
+ul.bullets li {
+  position: relative;
+  padding-left: 1.5ch;
+  line-height: 1.5;
+  font-size: 8.5pt;
+  color: var(--secondary);
+}
+
+/* Stitch: w-1 h-1 bg-primary mt-2 (4px square dot) */
+ul.bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5pt;                 /* mt-2 = 8px; adjusted for pt baseline */
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+
+ul.bullets li strong { color: var(--on-surface); }
+
+/* ── Skills — category label + pill chips ───────────────────────────────── */
+.skills-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4pt;
+}
+
+.skills-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4pt;
+  flex-wrap: wrap;
+}
+
+.skills-category {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--primary-c);
+  font-size: 8.5pt;
+  white-space: nowrap;
+  line-height: 1.7;
+}
+
+/* Transparent wrapper — pills become direct flex children of .skills-row */
+.skill-pills {
+  display: contents;
+}
+
+/* Stitch: px-3 py-1 rounded-full text-xs font-bold */
+.skill-pill {
+  font-size: 7.5pt;         /* text-xs = 12px = 9pt; scaled for print */
+  font-weight: 600;
+  color: var(--secondary);
+  background: var(--surface-low);
+  padding: 2pt 5pt;         /* py-1 px-3 = 4px 12px = 3pt 9pt */
+  border-radius: 20pt;
+}
+
+/* ── Bottom sections ────────────────────────────────────────────────────── */
+.bottom-entry {
+  margin-bottom: 4pt;
+}
+
+.bottom-entry:last-child { margin-bottom: 0; }
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.bottom-degree,
+.bottom-title {
+  font-weight: 600;
+  color: var(--on-surface);
+  font-size: 9.5pt;
+}
+
+.bottom-right {
+  text-align: right;
+  white-space: nowrap;
+  margin-left: 1em;
+  color: var(--secondary);
+  font-size: 8.5pt;
+}
