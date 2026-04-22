@@ -12,19 +12,19 @@ Instead of maintaining multiple CV versions, you keep a single dataset of your p
 flowchart LR
     JD([Job Description])
 
-    subgraph data [personal-data/]
+    subgraph data ["personal-data/"]
         direction TB
         profile[profile.md]
         companies[companies/]
         projects[projects/]
     end
 
-    subgraph draft [/draft-cv]
+    subgraph draft ["/draft-cv"]
         direction TB
         dc["Analyse JD\nScore projects\nDetect archetype"]
     end
 
-    subgraph renderers [Renderers]
+    subgraph renderers ["Renderers"]
         direction TB
         html["/html-cv → PDF"]
         latex["/latex-cv → .tex"]
