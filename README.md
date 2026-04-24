@@ -88,7 +88,7 @@ jobs/tnt_lab-frontend_engineer/
     draft-cv.yaml                  ← seed
     resumx-cv/cv.md                ← added by /resumx-cv
     latex-cv/cv.tex                ← added by /latex-cv
-    html-cv/cv(harvard).html       ← added by /html-cv (theme in filename)
+    html-cv/cv(harvard).html       ← added by /html-cv
 ```
 
 ## Going deeper

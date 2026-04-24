@@ -39,8 +39,17 @@ The seed schema is at `.claude/skills/draft-cv/schema.yaml`. Key points:
 
 ### Step 1 — Determine theme
 
-If the user specifies `--theme modern` (or requests the "modern" / "teal" theme), use the **modern** theme.
-Otherwise default to **harvard**.
+Check the user's message for explicit theme signals:
+- `--theme harvard`, or keywords: "harvard", "classic", "serif" → use **harvard**
+- `--theme modern`, or keywords: "modern", "teal", "sans-serif", "contemporary" → use **modern**
+
+If no theme signal is present, ask the user before reading any files:
+
+> Which theme would you like?
+> - **harvard** — serif (EB Garamond), classic layout, horizontal rule section dividers. Good for conservative industries and traditional roles.
+> - **modern** — sans-serif (Inter), teal accents, no rules. Good for product companies and startups.
+
+Wait for the user's answer, then continue to Step 2 with the chosen theme.
 
 ### Step 2 — Read inputs
 
@@ -62,7 +71,7 @@ Save to `[parent folder of seed]/html-cv/cv({theme}).html`.
 Example: seed at `jobs/tnt_lab-frontend_react/2026-04-02_13-16/draft-cv.yaml` rendered with `--theme modern`
 → save to `jobs/tnt_lab-frontend_react/2026-04-02_13-16/html-cv/cv(modern).html`
 
-Example: same seed rendered with `--theme harvard` (or default)
+Example: same seed rendered with `--theme harvard`
 → save to `jobs/tnt_lab-frontend_react/2026-04-02_13-16/html-cv/cv(harvard).html`
 
 Inform the user:
