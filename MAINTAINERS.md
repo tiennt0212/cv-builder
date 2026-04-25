@@ -8,7 +8,7 @@ This document describes the branching model and release process for maintainers.
 
 | Branch | Purpose |
 |--------|---------|
-| `master` | Stable. Always releasable. Only receives merges from `canary` immediately before a release. |
+| `master` | Stable. Always releasable. Only receives merges from `canary` immediately before a release. Protected — all changes require a PR. |
 | `canary` | Integration. All PRs target here. The working tip of the project. |
 | `examples` | Example personal data for reference and testing. Never merged into `master` or `canary`. |
 
@@ -38,13 +38,18 @@ canary ──► master ──► tag ──► gh release
                  └──► rebase long-lived branches on top
 ```
 
-1. **Merge `canary` into `master`**
+1. **Open a release PR: `canary → master`**
 
    ```bash
-   git checkout master
-   git merge canary
-   git push origin master
+   gh pr create \
+     --base master \
+     --head canary \
+     --title "chore: release vX.Y.Z — merge canary into master"
    ```
+
+   Then merge it on GitHub (or `gh pr merge --merge`).
+
+   This is an administrative merge, not a code review — no approval needed. Its purpose is to satisfy the branch protection rule and leave a clear merge commit in `master`'s history marking exactly when each release landed. Do not squash it: the merge commit is the record.
 
    After this step, `master` must reflect exactly the code being released — the release commit lives here, not on `canary`.
 
@@ -53,8 +58,9 @@ canary ──► master ──► tag ──► gh release
    Branches like `examples` carry their own commits (e.g. example data) that are never merged into `master`. After each release, rebase them so their custom commits sit on top of the latest `master`:
 
    ```bash
+   git fetch origin
    git checkout examples
-   git rebase master
+   git rebase origin/master
    git push origin examples --force-with-lease
    ```
 
