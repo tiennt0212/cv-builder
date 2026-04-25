@@ -2,7 +2,7 @@
 
 > Zero to PDF in ~5 minutes.
 
-**Prerequisites:** clone this repo, open it in Claude Code.
+**Prerequisites:** clone this repo, open it in any AI agent listed on [agentskills.io/clients](https://agentskills.io/clients) (Claude Code, Cursor, Gemini CLI, etc.).
 
 ---
 
