@@ -1,6 +1,6 @@
 # CV Builder
 
-A Claude Code-powered system for maintaining a structured dataset of your work experience and generating tailored, ATS-compliant CVs from it — one command at a time.
+An AI-powered system for maintaining a structured dataset of your work experience and generating tailored, ATS-compliant CVs from it — one command at a time.
 
 ## How it works
 
@@ -42,7 +42,7 @@ flowchart LR
 
 ## Setup
 
-**Requirements:** [Claude Code](https://claude.ai/code) installed and authenticated.
+**Requirements:** Any AI agent listed on [agentskills.io/clients](https://agentskills.io/clients).
 
 1. Clone this repo
 2. Run `/personal-log` to set up your profile and add your employers and projects (or say "I have an old CV" to import in bulk)
@@ -50,6 +50,19 @@ flowchart LR
 
 > **Sample data:** Check out the [`examples`](../../tree/examples) branch to see populated company and project files you can use as reference or test with.
 > **Privacy:** If you push your personal data, keep your fork private.
+
+## Agent compatibility
+
+Skills follow the [Agent Skills open standard](https://agentskills.io/specification) and work out of the box after cloning — no extra setup needed.
+
+| Agent | Reads from |
+|-------|-----------|
+| Claude Code | `.claude/skills/` |
+| Cursor | `.agents/skills/` |
+| Gemini CLI | `.agents/skills/` |
+| GitHub Copilot | `.agents/skills/` |
+| OpenAI Codex | `.agents/skills/` |
+| Junie, OpenHands, Goose, Roo Code, Amp, and others | `.agents/skills/` |
 
 ## Commands
 
@@ -88,7 +101,7 @@ jobs/tnt_lab-frontend_engineer/
     draft-cv.yaml                  ← seed
     resumx-cv/cv.md                ← added by /resumx-cv
     latex-cv/cv.tex                ← added by /latex-cv
-    html-cv/cv(harvard).html       ← added by /html-cv (theme in filename)
+    html-cv/cv(harvard).html       ← added by /html-cv
 ```
 
 ## Going deeper
@@ -98,6 +111,7 @@ jobs/tnt_lab-frontend_engineer/
 - **[Schema reference](agents-ref/schema.md)** — enums, tag taxonomy, stack naming conventions, section rules for project files
 - **[Glossary](docs/glossary.md)** — definitions for archetype, seed, proof points, run folder, match tier, keyword coverage
 - **[FAQ](docs/faq.md)** — common issues: project not selected, archetype detection skipped, low keyword coverage, date mismatches
+- **[Releasing](MAINTAINERS.md)** — branching model and release process for maintainers
 
 ## License
 

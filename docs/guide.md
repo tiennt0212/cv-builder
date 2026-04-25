@@ -4,6 +4,8 @@
 
 A full reference guide to using CV Builder — commands, scenarios, and renderer options.
 
+> **Agent compatibility:** this guide applies to Claude Code, Cursor, Gemini CLI, and all other agents listed on [agentskills.io/clients](https://agentskills.io/clients). Skills are loaded automatically from `.agents/skills/` — no extra setup needed.
+
 ---
 
 ## How the commands fit together

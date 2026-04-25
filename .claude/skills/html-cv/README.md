@@ -9,7 +9,7 @@ The simplest possible path from seed to a shareable CV. No LaTeX installation, n
 ## Scope
 
 **Handles:**
-- **Harvard theme** — serif font (Georgia), centred name header, horizontal rule section dividers; safe for conservative industries and ATS systems
+- **Harvard theme** — serif font (EB Garamond), centred name header, horizontal rule section dividers; safe for conservative industries and ATS systems
 - **Modern theme** — sans-serif, teal accent colour, role subtitle in header; contemporary look for product and startup roles
 - All seed sections: summary, core competencies (if present), experience with sub-projects, skills, education, certifications, awards, publications, languages
 
@@ -17,7 +17,7 @@ The simplest possible path from seed to a shareable CV. No LaTeX installation, n
 
 ## Capabilities
 
-- Supports two themes from the same `draft-cv.yaml` seed — run once per theme (default: harvard; add `--theme modern` for the second)
+- Supports two themes from the same `draft-cv.yaml` seed — run once per theme (skill will ask if not specified; pass `--theme harvard` or `--theme modern` to skip the question)
 - Converts `**bold**` in bullet text to `<strong>` HTML elements
 - Omits empty sections and optional elements cleanly (no blank `<div>` remnants)
 - Formats date ranges with en-dash (`–`) consistently
@@ -29,8 +29,8 @@ The simplest possible path from seed to a shareable CV. No LaTeX installation, n
 
 **Output:**
 ```
-[run-folder]/html-cv/cv(harvard).html   ← default theme
-[run-folder]/html-cv/cv(modern).html    ← with --theme modern flag
+[run-folder]/html-cv/cv(harvard).html
+[run-folder]/html-cv/cv(modern).html
 ```
 
 **To preview:** open the file in any browser — no server or build step needed.

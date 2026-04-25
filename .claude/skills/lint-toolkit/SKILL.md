@@ -3,7 +3,7 @@ name: lint-toolkit
 description: >
   Validate the cv-builder toolkit for structural integrity, coupling drift, and internal
   consistency. Covers: skills, agents-ref, themes, bin/html-to-pdf script chain, docs, evals,
-  and CLAUDE.md alignment. This is a tool-developer command — use it when maintaining or
+  and agent context files alignment. This is a tool-developer command — use it when maintaining or
   extending the toolkit, before releasing changes, or after editing any non-user-data file.
   Trigger when the user says "/lint-toolkit", "audit the toolkit", "check the skills",
   "validate toolkit files", or "are the skills consistent".
@@ -28,7 +28,7 @@ components may silently fall out of sync. This skill surfaces that drift before 
 ## Arguments
 
 $ARGUMENTS — optional. Pass a section name to run only that section:
-`skills`, `agents-ref`, `themes`, `bin`, `docs`, `evals`, `claude-md`.
+`skills`, `agents-ref`, `themes`, `bin`, `docs`, `evals`, `agent-md`.
 If omitted, run all sections.
 
 ---
@@ -40,7 +40,7 @@ Read these before running any checks:
 1. `agents-ref/schema.md` — current enum values, tag taxonomy, stack naming convention
 2. `.claude/skills/draft-cv/schema.yaml` — seed YAML schema; defines all fields `/draft-cv`
    produces and renderers consume
-3. `CLAUDE.md` — user-facing command list and project instructions
+3. Agent context files — `AGENTS.md` and `CLAUDE.md`. Read both if they exist.
 
 ---
 
@@ -53,7 +53,7 @@ Read every `.claude/skills/*/SKILL.md`.
 | Check | Severity | Description |
 |-------|----------|-------------|
 | `name` field present | ERROR | Skill cannot be discovered without a name |
-| `description` field present | ERROR | Used by Claude to decide when to invoke the skill |
+| `description` field present | ERROR | Used by the AI agent to decide when to invoke the skill |
 | Trigger conditions in description | WARN | No "Trigger when" or "Use this skill when" → inconsistent invocation |
 | "Do NOT trigger" guard present | INFO | Prevents overlap between similar-purpose skills |
 
@@ -67,7 +67,7 @@ instructions). For each:
 - **Runtime-generated paths** (e.g. `jobs/[company-role]/draft-cv.yaml`): skip — these are
   user outputs, not toolkit files
 
-**Why this matters:** A missing file reference fails silently at runtime. Claude either
+**Why this matters:** A missing file reference fails silently at runtime. The AI agent either
 hallucinates the content or returns an error the user has to debug on their own.
 
 ### A3 — Schema coupling drift
@@ -156,7 +156,7 @@ check. But if it exists, verify its structure matches the archetype schema defin
 ## Step 4 — Section C: Themes integrity
 
 The theme system has two distinct layers that must stay in sync:
-1. **AI instruction files** at `.claude/skills/{skill}/themes/{name}/` — tell Claude how to
+1. **AI instruction files** at `.claude/skills/{skill}/themes/{name}/` — tell the AI agent how to
    generate the HTML/LaTeX structure for that theme
 2. **CSS/template assets** at `themes/{name}/` — the actual stylesheets referenced by
    generated HTML files
@@ -179,7 +179,7 @@ If theme directories exist in `themes/` but no skill references them → INFO (m
 
 ---
 
-## Step 5 — Section D: bin/ + html-to-pdf script chain
+## Step 5 — Section D: bin/ + html-to-pdf script chain + agent symlink
 
 The `./html-to-pdf` script is the recommended PDF export path. Its chain is:
 `html-to-pdf` (root) → `bin/build-cv.js` → `bin/package.json` dependencies
@@ -190,6 +190,15 @@ The `./html-to-pdf` script is the recommended PDF export path. Its chain is:
 | `bin/build-cv.js` exists | ERROR | `html-to-pdf` calls this directly; missing → runtime error |
 | `bin/package.json` exists | ERROR | Required for `npm install` — without it, dependencies can't be installed |
 | `html-to-pdf` references `bin/build-cv.js` by correct relative path | WARN | If the path in the script doesn't match the actual file location, it will fail on any machine |
+
+**Agent symlink integrity:**
+
+`.agents/skills/` is a symlink to `.claude/skills/`. All non-Claude-Code agents (Cursor, Gemini CLI, Codex, etc.) read skills from this path. A broken or missing symlink silently breaks those agents without affecting Claude Code.
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| `.agents/skills` exists as a symlink | ERROR | Non-Claude-Code agents cannot discover any skills |
+| Symlink target resolves to `.claude/skills/` | ERROR | Symlink exists but points to a wrong or deleted path — agents get an empty skill set |
 
 ---
 
@@ -301,12 +310,14 @@ Verify `evals/sample-jds/` has at least one file → WARN if empty (no JDs = no 
 
 ---
 
-## Step 8 — Section G: CLAUDE.md alignment
+## Step 8 — Section G: agent-md alignment
+
+Read the agent context files (`AGENTS.md`, `CLAUDE.md`) and locate the skills table.
 
 | Check | Severity | Description |
 |-------|----------|-------------|
-| Skill in `.claude/skills/` not listed in `CLAUDE.md` ## Commands | WARN | Undiscoverable by users (acceptable for developer-only skills — note which ones) |
-| Command listed in `CLAUDE.md` has no skill file | ERROR | Listed command does not work |
+| Skill in `.claude/skills/` not listed in the effective skills table | WARN | Undiscoverable by users (acceptable for developer-only skills — note which ones) |
+| Skill listed in table has no corresponding skill file | ERROR | Listed skill does not work |
 
 ---
 
@@ -345,7 +356,7 @@ Format the report grouped by section. Sections with no issues get a single ✓ l
   sample-projects/no-results.md
   - [WARN]  F2: stack: "vuejs" should be "VueJS"
 
-### G — CLAUDE.md alignment
+### G — agent-md
   ✓ No issues found
 
 ---
@@ -363,7 +374,7 @@ If all sections pass:
 ```
 ## Toolkit Lint Report — all checks passed
 
-Sections: Skills ✓ · agents-ref ✓ · Themes ✓ · bin ✓ · docs ✓ · evals ✓ · CLAUDE.md ✓
+Sections: Skills ✓ · agents-ref ✓ · Themes ✓ · bin ✓ · docs ✓ · evals ✓ · agent-md ✓
 ```
 
 ---
