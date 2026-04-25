@@ -19,10 +19,12 @@ Thank you for your interest in contributing! This is a prompt-engineering and AI
 ## Workflow
 
 1. Fork the repo
-2. Create a branch: `git checkout -b feat/your-feature-name`
+2. Create a branch off `canary`: `git checkout -b feat/your-feature-name`
 3. Make your changes
-4. Open a Pull Request against the `canary` branch (not `main`)
+4. Open a Pull Request against the `canary` branch (not `master`)
 5. Describe what you changed and why in the PR description
+
+For the full branching model and how maintainers cut releases from `canary` → `master`, see [MAINTAINERS.md](MAINTAINERS.md).
 
 ## Naming conventions
 

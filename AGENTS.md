@@ -59,3 +59,7 @@ Skill files live in `.claude/skills/[skill-name]/SKILL.md` (also accessible via 
 - Explain the *why* behind rules, not just the *what*
 - Include examples of good vs bad output where rules could be misapplied
 - Keep `agents-ref/schema.md` as the single source of truth for enums and taxonomy — do not duplicate in skill files
+
+## When releasing
+
+Before cutting a release, read [MAINTAINERS.md](MAINTAINERS.md). It defines the branching model (`canary` → `master` → tag), branch naming conventions, versioning rules, and the full release checklist including how to keep long-lived branches in sync after each release.

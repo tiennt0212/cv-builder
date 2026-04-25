@@ -111,6 +111,7 @@ jobs/tnt_lab-frontend_engineer/
 - **[Schema reference](agents-ref/schema.md)** — enums, tag taxonomy, stack naming conventions, section rules for project files
 - **[Glossary](docs/glossary.md)** — definitions for archetype, seed, proof points, run folder, match tier, keyword coverage
 - **[FAQ](docs/faq.md)** — common issues: project not selected, archetype detection skipped, low keyword coverage, date mismatches
+- **[Releasing](MAINTAINERS.md)** — branching model and release process for maintainers
 
 ## License
 
