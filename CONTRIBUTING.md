@@ -1,6 +1,6 @@
 # Contributing to CV Builder
 
-Thank you for your interest in contributing! This is a prompt-engineering and Claude Code skills project — contributions don't have to be traditional code.
+Thank you for your interest in contributing! This is a prompt-engineering and AI agent skills project — contributions don't have to be traditional code.
 
 ## What contributions are welcome
 
@@ -39,6 +39,8 @@ When improving a skill or command file:
 - Explain the *why* behind rules, not just the *what*
 - Include examples of correct vs incorrect output where a rule could be misapplied
 - Keep `agents-ref/schema.md` as the authority — reference it, don't copy it
+
+**Skill file location:** skills live in `.claude/skills/[skill-name]/SKILL.md`. `.agents/skills/` is a symlink to `.claude/skills/` — add new skills under `.claude/skills/` and they are automatically available to all agents (Cursor, Gemini CLI, Codex, etc.).
 
 ## License
 
