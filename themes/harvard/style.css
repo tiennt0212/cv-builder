@@ -205,3 +205,9 @@ ul.bullets li {
   margin-left: 1em;
   color: var(--color-tertiary);
 }
+
+.entry-description {
+  font-size: 0.88em;
+  color: var(--color-tertiary);
+  font-style: italic;
+}

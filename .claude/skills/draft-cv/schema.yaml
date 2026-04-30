@@ -54,19 +54,22 @@ sections:
         dates: string
 
       - kind: certification
-        title: string
+        title: string        # SHORT label — canonical name only, max ~50 chars
+        description: string  # OPTIONAL — one line of context (e.g. "Distinction, 92%")
         issuer: string
         date: string
         url: string          # OPTIONAL
 
       - kind: award
-        title: string
-        issuer: string       # e.g. "ICON Blockchain Hackathon"
+        title: string        # SHORT label — canonical award name only, max ~50 chars
+        description: string  # OPTIONAL — one line of context (e.g. "Cited as ideal model for community-funded projects")
+        issuer: string       # e.g. "ABC Hackathon", "XYZ Foundation"
         date: string
         url: string          # OPTIONAL
 
       - kind: publication
-        title: string
+        title: string        # SHORT label — max ~50 chars
+        description: string  # OPTIONAL — one line of context (e.g. "Co-authored with 2 colleagues")
         venue: string        # journal, conference, or platform name
         date: string
         url: string          # OPTIONAL
