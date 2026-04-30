@@ -134,6 +134,7 @@ Use `<hr class="section-rule">` + `<div class="section-heading">` before each se
     <span class="bottom-right">{date}</span>
   </div>
   <div class="bottom-row"><span>{issuer}</span></div>
+  <div class="bottom-row"><span class="entry-description">{description}</span></div>  <!-- omit entire row if no description -->
 </div>
 ```
 
@@ -145,6 +146,7 @@ Use `<hr class="section-rule">` + `<div class="section-heading">` before each se
     <span class="bottom-right">{date}</span>
   </div>
   <div class="bottom-row"><span>{issuer or venue}</span></div>
+  <div class="bottom-row"><span class="entry-description">{description}</span></div>  <!-- omit entire row if no description -->
 </div>
 ```
 

@@ -147,6 +147,15 @@ If no URL exists, omit the `\href{}{}` wrapper:
 \noindent\textbf{Award Title} --- Org Name \hfill \textcolor[gray]{0.4}{Mon YYYY}
 ```
 
+If the entry has an optional `description` field, render it as a secondary gray line immediately below — indented slightly, small font, no date column:
+
+```latex
+\noindent\href{https://example.com}{\textbf{Award Title} --- Org Name} \hfill \textcolor[gray]{0.4}{Mon YYYY} \\[-1pt]
+\noindent\hspace{1em}\textcolor[gray]{0.5}{\small One-line context from description field.} \\[3pt]
+```
+
+Omit the description line entirely when `description` is absent from the seed entry.
+
 ---
 
 ## Full Template

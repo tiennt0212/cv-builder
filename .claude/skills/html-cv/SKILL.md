@@ -98,6 +98,7 @@ Escape special characters in all text content:
 - Omit GitHub contact item if `contact.github` is absent.
 - Omit `project-dates` span if project has no dates.
 - Omit GPA span if education entry has no gpa.
+- For `kind: award`, `kind: certification`, and `kind: publication` entries in `sections[]`: if the entry has a `description` field, render it as a secondary line below the title — use a `<span class="entry-description">` element. Omit the span entirely if `description` is absent.
 
 ### Date format
 Use `–` (en dash) for date ranges: `Dec 2025 – Present`.

@@ -176,6 +176,7 @@ Wrap all bottom entries for a heading inside a single `<section class="cv-sectio
     <span class="bottom-right">{date}</span>
   </div>
   <div class="bottom-row"><span>{issuer}</span></div>
+  <div class="bottom-row"><span class="entry-description">{description}</span></div>  <!-- omit entire row if no description -->
 </div>
 ```
 
@@ -187,6 +188,7 @@ Wrap all bottom entries for a heading inside a single `<section class="cv-sectio
     <span class="bottom-right">{date}</span>
   </div>
   <div class="bottom-row"><span>{issuer or venue}</span></div>
+  <div class="bottom-row"><span class="entry-description">{description}</span></div>  <!-- omit entire row if no description -->
 </div>
 ```
 

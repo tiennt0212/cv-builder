@@ -108,15 +108,22 @@ One line per category.
 
 Omit the GPA line if not present in seed.
 
-### Awards & Publications
+### Sections (Education, Awards, Publications, Certifications)
+
+Render each `sections[]` entry under its `heading`. For `kind: award`, `kind: certification`, and `kind: publication`:
 
 ```
-## Awards & Publications
-
-- **[title]** — [description] ([url domain]([url])) | [date]
+- **[title]** — [issuer or venue] | [date]   ← if no url and no description
+- **[title]** — [issuer or venue] ([url domain]([url])) | [date]   ← if url, no description
+- **[title]** — [issuer or venue]: [description] ([url domain]([url])) | [date]   ← if both url and description
+- **[title]** — [issuer or venue]: [description] | [date]   ← if description, no url
 ```
 
-Omit the URL portion if no `url` key in the seed entry. Omit the entire section if `awards` is absent from the seed.
+Rules:
+- `issuer` (awards/certifications) or `venue` (publications) always appears after the em-dash.
+- `description` is optional — append after `[issuer]:` if present; omit entirely if absent.
+- Omit the URL portion if no `url` key in the seed entry.
+- Omit the entire section if the heading's `entries` array is empty.
 
 ---
 

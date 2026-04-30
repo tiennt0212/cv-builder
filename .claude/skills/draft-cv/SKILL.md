@@ -313,9 +313,25 @@ The test is **domain misalignment**, not topic distance. A bullet fails the test
 
 **Do not drop a bullet simply because it does not mention the JD's tech stack.** Engineering initiative bullets — building internal tools, proactive migration work, end-to-end ownership, knowledge sharing — are domain-neutral. They demonstrate the ownership mindset and problem-solving ability that most JDs value explicitly. Filtering them out weakens the CV without reducing misalignment risk.
 
-Examples of bullets to **drop**: "Implemented SPHINCS+ key derivation for post-quantum wallet" (in a marketing site JD), "Trained a custom LLM on healthcare records" (in a traditional frontend JD).
+Examples of bullets to **drop**: "Implemented custom cryptographic key management for a blockchain wallet" (in a marketing site JD), "Trained a custom LLM on healthcare records" (in a traditional frontend JD).
 
 Examples of bullets to **keep** even if off-stack: "Built an internal migration tool end-to-end — collected requirements, designed UI in Figma, and implemented the feature" (shows ownership); "Diagnosed a critical bug across ~1,000 commits using git bisect; shared the technique with the team" (shows debugging depth and mentoring).
+
+### Project and role title rules
+
+`projects[].title` and `roles[].title` are labels, not descriptions. Keep them short and scannable.
+
+- **Max ~40 chars, 2–5 words.** A recruiter reads the title in under a second — it must be a label, not a sentence.
+- **Drop explanatory suffixes** that restate what the company context already implies. The company header, dates, and bullets do the explaining.
+- **No narrative em-dash clauses.** A title ending in "— [adjective phrase]" is almost always a sign that the suffix belongs in a bullet instead.
+- **Role titles** follow the same rule — a job title, not a sentence.
+
+| Good | Avoid |
+|------|-------|
+| `Auth Platform` | `Auth Platform — Enterprise Identity Management System` |
+| `Admin Portal (v2)` | `**Admin Portal Management System (v2)**` |
+| `Customer Dashboard` | `Customer Dashboard — Analytics & Reporting App` |
+| `Senior Frontend Developer` | `Frontend Developer / Open Source Contributor` (if open source is just one project among many) |
 
 ### Core Competencies
 
@@ -363,6 +379,34 @@ Populate the `competencies` field in the seed with 6–8 keyword phrases:
 **Education, Certifications:** Pull from profile.md. Include if relevant to the JD or if the credential is prestigious enough to add credibility regardless of domain match.
 
 **Awards and Publications:** Do not filter by JD keyword match. These are mindset signals, not domain signals — they tell the employer something about the candidate's intellectual depth, initiative, and ceiling that no project bullet can replicate. A hackathon win or a published paper belongs on the CV for almost any role, even if the domain (blockchain, AI, healthcare) differs from the JD. Exclude only if the section would be completely empty or the item is too old to be credible (10+ years).
+
+**Title length rules for sections entries:** The `title` field is a label that a recruiter can identify and look up if interested. It should answer: *"What is this thing called?"* — not *"How good was it?"* or *"What rank did I get?"*
+
+- **Max ~50 chars.** If you find yourself writing a sentence, stop.
+- **`issuer` is the organisation name** — don't repeat it in `title`.
+- **Brief outcome context goes in `description`** — one line max.
+
+Two structural edge cases that commonly go wrong:
+
+**Case A — Rank/placement awards** (`Top 8`, `2nd Place`, `Finalist`): A rank alone is contextless — the reader can't interpret it without knowing what it was for. The *track or category* belongs in `title` because it completes the meaning of the rank. The *organising body* belongs in `issuer`.
+
+> `title: 2nd Place — Mobile App Track` / `issuer: City Dev Hackathon 2024`
+>
+> NOT `title: 2nd Place` (what does this mean alone?) or `title: City Dev Hackathon — 2nd Place` (duplicates the issuer)
+
+**Case B — Grant/program outcomes** (a grant received, a review rating, a "selected from N applicants" result): There is no formal prize name — only a program and an outcome. The title should be **the program name** (something the reader can look up), not the outcome phrase. The outcome goes in `description`.
+
+> `title: Open Source Fellowship` / `description: "selected from 200+ applicants; project rated highly by review committee"` / `issuer: Tech Community Foundation`
+>
+> NOT `title: Outstanding Contribution` (an adjective, not a name) or `title: Exceeded Expectations` (a grade, not a title)
+
+| Situation | title | description | issuer |
+|-----------|-------|-------------|--------|
+| Named prize | `Winner — Mobile App Track` | *(omit)* | `City Dev Hackathon` |
+| Rank / placement | `2nd Place — NLP Category` | *(omit — title is self-contained)* | `National AI Challenge 2024` |
+| Grant / program outcome | `Open Source Fellowship` | `selected from 200+ applicants; rated highly by review committee` | `Tech Community Foundation` |
+| Personal open-source project | `my-tool (Open Source, MIT)` | `Solo-built CLI tool, ~3 weeks` | `GitHub (personal)` |
+| Academic paper | `Deep Learning for Fraud Detection` | *(omit if title is self-explanatory)* | `IEEE Xplore` |
 
 **Hackathon projects in Experience:** Apply the same logic. A hackathon project with a prize award earns its place as a character signal regardless of JD domain match — include briefly (1–2 bullets focused on the win and the ownership breadth) rather than scoring it out entirely.
 
