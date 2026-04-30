@@ -401,3 +401,9 @@ ul.bullets li strong { color: var(--on-surface); }
   color: var(--secondary);
   font-size: 8.5pt;
 }
+
+.entry-description {
+  font-size: 8pt;
+  color: var(--secondary);
+  font-style: italic;
+}
