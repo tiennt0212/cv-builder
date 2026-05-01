@@ -61,6 +61,15 @@ Skill files live in `.claude/skills/[skill-name]/SKILL.md` (also accessible via 
 - Keep `agents-ref/schema.md` as the single source of truth for enums and taxonomy — do not duplicate in skill files
 - Examples in skill files must be fictional. Never use values from `personal-data/`, `jobs/`, or any files from those directories loaded in context as examples — even as illustration. Invent fictional examples instead.
 
+## Branch hygiene for personal data
+
+Users keep their `personal-data/` and `jobs/` commits on a local `personal` branch that is **never pushed to the public remote**. If a user asks where to store their data changes or how to stay current with toolkit updates, refer them to the **Personal branch** section in [MAINTAINERS.md](MAINTAINERS.md).
+
+Key points to surface when relevant:
+- Create a `personal` branch once after cloning; commit all `personal-data/` and `jobs/` changes there.
+- After a new toolkit release lands on `master`, run `git rebase origin/master` on `personal` to stay current.
+- Never push `personal` to `origin`.
+
 ## When releasing
 
 Before cutting a release, read [MAINTAINERS.md](MAINTAINERS.md). It defines the branching model (`canary` → `master` → tag), branch naming conventions, versioning rules, and the full release checklist including how to keep long-lived branches in sync after each release.
