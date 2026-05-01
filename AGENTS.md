@@ -63,12 +63,15 @@ Skill files live in `.claude/skills/[skill-name]/SKILL.md` (also accessible via 
 
 ## Branch hygiene for personal data
 
-Users keep their `personal-data/` and `jobs/` commits on a local `personal` branch that is **never pushed to the public remote**. If a user asks where to store their data changes or how to stay current with toolkit updates, refer them to the **Personal branch** section in [MAINTAINERS.md](MAINTAINERS.md).
+This is a public repo — pushing `personal-data/`, `jobs/`, or `agents-ref/archetypes.yaml` to `origin` would expose the user's personal information to the internet. Users keep all such commits on a local `personal` branch that is never pushed upstream.
 
-Key points to surface when relevant:
-- Create a `personal` branch once after cloning; commit all `personal-data/` and `jobs/` changes there.
-- After a new toolkit release lands on `master`, run `git rebase origin/master` on `personal` to stay current.
-- Never push `personal` to `origin`.
+Surface this guidance proactively when the user is about to make their first data commit, or when they ask about git workflow:
+- Create `personal` branch once after cloning: `git checkout -b personal`
+- Commit all `personal-data/`, `jobs/`, and `agents-ref/archetypes.yaml` changes here
+- After a toolkit release: `git fetch origin && git rebase origin/master` to stay current without losing data
+- Never run `git push origin personal`
+
+Full details in the **Personal branch** section of [MAINTAINERS.md](MAINTAINERS.md).
 
 ## When releasing
 

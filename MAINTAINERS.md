@@ -120,12 +120,11 @@ Resolve any conflicts (rare — toolkit files and personal-data files rarely ove
 
 ### What not to push
 
-The following directories must remain local on the `personal` branch:
+The following must remain local on the `personal` branch:
 
 - `personal-data/` — raw career facts
 - `jobs/` — job-application outputs
-
-No other directories are restricted.
+- `agents-ref/archetypes.yaml` — user's target role definitions (populated by `setup-archetypes`)
 
 ---
 
