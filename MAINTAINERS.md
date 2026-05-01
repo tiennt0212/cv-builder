@@ -11,6 +11,7 @@ This document describes the branching model and release process for maintainers.
 | `master` | Stable. Always releasable. Only receives merges from `canary` immediately before a release. Protected — all changes require a PR. |
 | `canary` | Integration. All PRs target here. The working tip of the project. |
 | `examples` | Example personal data for reference and testing. Never merged into `master` or `canary`. |
+| `personal` | User's own `personal-data/` and `jobs/` commits. Never pushed to the public remote or merged upstream. |
 
 ### Short-lived branches
 
@@ -64,7 +65,7 @@ canary ──► master ──► tag ──► gh release
    git push origin examples --force-with-lease
    ```
 
-   Repeat for any other long-lived branch that follows this pattern. The goal: no long-lived branch should lag behind `master` in toolkit code — only its own branch-specific commits should be ahead.
+   Repeat for any other long-lived branch that follows this pattern, including users' `personal` branches (see [Personal branch](#personal-branch) below). The goal: no long-lived branch should lag behind `master` in toolkit code — only its own branch-specific commits should be ahead.
 
 3. **Tag and publish the release**
 
@@ -81,6 +82,49 @@ canary ──► master ──► tag ──► gh release
    - The release tag appears on GitHub pointing to a commit on `master`
    - `master` history includes the merge commit from `canary`
    - Long-lived branches (e.g. `examples`) show no commits behind `master`, only their own commits ahead
+
+---
+
+## Personal branch
+
+Users who clone this repo keep their own data on a long-lived `personal` branch that is **never pushed to the public remote and never merged upstream**.
+
+### Purpose
+
+The `personal` branch carries all commits to `personal-data/` and `jobs/`. Keeping them on a separate branch means:
+
+- The public remote stays free of personal information.
+- Toolkit updates on `master` can be pulled in cleanly without touching user data.
+
+### Setup
+
+After cloning, create the branch once:
+
+```bash
+git checkout -b personal
+```
+
+All `personal-data/` and `jobs/` commits go here. Never push this branch to `origin`.
+
+### Staying current after a release
+
+When a new release lands on `master`, rebase `personal` on top of it:
+
+```bash
+git fetch origin
+git checkout personal
+git rebase origin/master
+```
+
+Resolve any conflicts (rare — toolkit files and personal-data files rarely overlap), then continue. Do **not** push `personal` to `origin`.
+
+### What not to push
+
+The following must remain local on the `personal` branch:
+
+- `personal-data/` — raw career facts
+- `jobs/` — job-application outputs
+- `agents-ref/archetypes.yaml` — user's target role definitions (populated by `setup-archetypes`)
 
 ---
 

@@ -126,6 +126,37 @@ Flag as WARN when rules appear verbatim across multiple skills instead of in a s
 - Tag taxonomy (should cite `agents-ref/schema.md`)
 - Date format rules (should cite `agents-ref/schema.md`)
 
+### A6 — Personal data in skill files
+
+Skill files are committed to the public template repo. Personal data from `personal-data/` and `jobs/` must never appear in them — not as examples, not as illustration, not accidentally.
+
+**Step A6a — Collect identifiers from `personal-data/profile.md`:**
+- `contact.email`
+- `contact.phone`
+- `contact.linkedin` (handle value, not a URL pattern)
+- `contact.github` (handle value)
+- Candidate's full name as a single string (first + last together, from the `name` field)
+
+**Step A6b — Collect proper nouns from the rest of `personal-data/`:**
+- If `personal-data/companies/` is empty or does not exist, skip this sub-step.
+- If `personal-data/projects/` is empty or does not exist, skip this sub-step.
+- For each file in `personal-data/companies/*.md`: extract the frontmatter `name` field
+- For each file in `personal-data/projects/*.md`: extract the frontmatter `title` or `name` field
+
+**Step A6c — Collect identifiers from `jobs/`:**
+- If `jobs/` is empty or does not exist, skip this sub-step.
+- List all direct subdirectories under `jobs/`. Each folder name is itself the slug — use it as-is.
+
+**Scan:** For each extracted value from A6a–A6c, search every `.claude/skills/*/SKILL.md` for a whole-word, case-insensitive match (the value must be surrounded by non-alphanumeric characters — not a substring of a longer word). Skip values shorter than 4 characters.
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| Contact identifier (A6a) found in a skill file | ERROR | Direct personal data in a public file — remove immediately |
+| Company/project name (A6b) found in a skill file | WARN | User's personal data may be used as example — verify and replace with fictional data if so |
+| Job folder slug (A6c) found in a skill file | WARN | Application target leaked into public skill — verify intent |
+
+**Note:** Template placeholders like `[contact.linkedin]` or the word `handle` are not personal identifiers — only flag literal matches against actual extracted values.
+
 ---
 
 ## Step 3 — Section B: agents-ref integrity
@@ -331,6 +362,7 @@ Format the report grouped by section. Sections with no issues get a single ✓ l
 ### A — Skills (8 files)
   draft-cv/SKILL.md
   - [WARN]  A3: hardcodes type enum values inline — should cite agents-ref/schema.md
+  - [ERROR] A6: contains personal email address — remove before committing
   html-cv/SKILL.md ✓
   personal-log/SKILL.md ✓
   ... (one line per clean skill)

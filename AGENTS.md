@@ -59,6 +59,19 @@ Skill files live in `.claude/skills/[skill-name]/SKILL.md` (also accessible via 
 - Explain the *why* behind rules, not just the *what*
 - Include examples of good vs bad output where rules could be misapplied
 - Keep `agents-ref/schema.md` as the single source of truth for enums and taxonomy — do not duplicate in skill files
+- Examples in skill files must be fictional. Never use values from `personal-data/`, `jobs/`, or any files from those directories loaded in context as examples — even as illustration. Invent fictional examples instead.
+
+## Branch hygiene for personal data
+
+This is a public repo — pushing `personal-data/`, `jobs/`, or `agents-ref/archetypes.yaml` to `origin` would expose the user's personal information to the internet. Users keep all such commits on a local `personal` branch that is never pushed upstream.
+
+Surface this guidance proactively when the user is about to make their first data commit, or when they ask about git workflow:
+- Create `personal` branch once after cloning: `git checkout -b personal`
+- Commit all `personal-data/`, `jobs/`, and `agents-ref/archetypes.yaml` changes here
+- After a toolkit release: `git fetch origin && git rebase origin/master` to stay current without losing data
+- Never run `git push origin personal`
+
+Full details in the **Personal branch** section of [MAINTAINERS.md](MAINTAINERS.md).
 
 ## When releasing
 
