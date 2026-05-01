@@ -59,6 +59,7 @@ Skill files live in `.claude/skills/[skill-name]/SKILL.md` (also accessible via 
 - Explain the *why* behind rules, not just the *what*
 - Include examples of good vs bad output where rules could be misapplied
 - Keep `agents-ref/schema.md` as the single source of truth for enums and taxonomy — do not duplicate in skill files
+- Examples in skill files must be fictional. Never use values from `personal-data/`, `jobs/`, or any files from those directories loaded in context as examples — even as illustration. Invent fictional examples instead.
 
 ## When releasing
 
