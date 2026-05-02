@@ -38,7 +38,7 @@ Build a complete picture of the candidate before touching the JD.
 
 Extract the following from the JD:
 
-- **Role type**: product / outsource / agency / AI-focused / startup / enterprise / other
+- **Role type**: product / outsource / agency / AI-focused / startup / enterprise / other *(JD-analysis heuristic for classifying the role being applied to — not a schema.md enum; the schema.md `type` enums describe company and project types, which are different lists)*
 - **Seniority level**: junior / mid / senior — infer from responsibilities and requirements language
 - **Required skills**: every technical skill, tool, or methodology mentioned
 - **Soft signals**: ownership expectations, team structure, delivery pace, culture indicators
