@@ -45,6 +45,8 @@ Skills are the primary way to interact with this toolkit. Claude Code invokes th
 | `html-letter` | Render `draft-letter.yaml` into a browser-previewable HTML cover letter |
 | `lint-data` | Validate all `personal-data/` files against schema rules; report errors and warnings by file |
 | `lint-toolkit` | Validate the full toolkit for structural integrity *(tool-developer skill)* |
+| `skill-creator` | Create, modify, and performance-test skills; scaffold new skill files with correct frontmatter and structure *(tool-developer skill)* |
+| `dev-harness` | Autonomous OODA-loop harness for skill development — orchestrates Planner, Implementer, Checker, Eval, and PR sub-agents with lint-driven remediation *(tool-developer skill)* |
 
 ## When editing data files
 
