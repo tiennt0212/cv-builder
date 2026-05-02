@@ -10,8 +10,6 @@ jobs/[company_slug]-[role_slug]/
     analysis.md
     draft-cv.yaml
     html-cv/cv(harvard).html    ← added by /html-cv
-    latex-cv/cv.tex             ← added by /latex-cv
-    resumx-cv/cv.md             ← added by /resumx-cv
     draft-letter/
       draft-letter.yaml         ← added by /draft-letter
     html-letter/

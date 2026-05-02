@@ -74,5 +74,3 @@ The `competencies` field was not populated in the seed — either because the JD
 - `/html-cv` — produces a self-contained HTML file. Preview immediately in any browser. Two PDF export options:
   - **Browser print** (`File > Print → Save as PDF`) — zero setup. Links in the PDF will not be clickable.
   - **`./html-to-pdf <file>`** — runs Puppeteer locally, produces a PDF where links are clickable. One-time setup: `npm install` in `bin/`. Recommended for final submissions sent to recruiters.
-- `/latex-cv` — highest typographic quality. Compile via Overleaf (no local TeX engine needed).
-- `/resumx-cv` — paste output into the ResumeX browser playground for an alternative preview.
