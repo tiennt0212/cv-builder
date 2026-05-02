@@ -16,16 +16,6 @@ This document outlines the planned direction for cv-builder. It is intentionally
 | `/draft-letter` | Stable |
 | `/html-cv` | Active development — 2 themes (`harvard`, `modern`) |
 | `/html-letter` | Active development — 1 theme (`modern`) |
-| `/latex-cv` | Active development |
-| `/resumx-cv` | Frozen — no further development (see below) |
-
----
-
-## Frozen
-
-### resumx-cv
-
-`/resumx-cv` is frozen and will receive no new features. ResumeX's style system is too constrained to support the visual variety we want to offer. Existing functionality remains available but unsupported.
 
 ---
 
@@ -46,18 +36,6 @@ The `/html-letter` skill currently ships one theme (`modern`). Cover letters hav
 
 - [ ] `harvard` theme for cover letters (matches existing `harvard` CV theme)
 - [ ] Additional letter themes
-
-### LaTeX CV
-
-For users who prefer a compiled PDF workflow. LaTeX output is precise and portable across environments.
-
-- [ ] Multi-theme support (beyond current Harvard style)
-- [ ] Improved handling of edge cases (long bullet points, many roles, Unicode)
-- [ ] Documentation for local compilation (xelatex setup guide)
-
-### LaTeX cover letter
-
-- [ ] `/latex-letter` skill — render `draft-letter.yaml` into a compilable `.tex` cover letter
 
 ---
 
@@ -81,4 +59,3 @@ This would lower the barrier for contributors who have design taste but limited 
 
 - GUI or web app (out of scope for this CLI-first tool)
 - Word/DOCX output
-- ResumeX feature development (frozen, see above)

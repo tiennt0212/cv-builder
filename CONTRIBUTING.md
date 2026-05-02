@@ -4,7 +4,7 @@ Thank you for your interest in contributing! This is a prompt-engineering and AI
 
 ## What contributions are welcome
 
-- **New renderer themes** — new visual styles for `/html-cv` or `/latex-cv`
+- **New renderer themes** — new visual styles for `/html-cv`
 - **Skill improvements** — better prompt logic in `.claude/skills/`
 - **Schema evolution** — new tags, enums, or section rules in `agents-ref/schema.md`
 - **Documentation** — clearer `docs/`, `evals/`, or inline instructions

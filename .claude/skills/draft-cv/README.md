@@ -17,7 +17,7 @@ The system's "brain". Separates *what to show* (content) from *how to show it* (
 - Full prose generation: summary, experience bullets, skills, core competencies
 - Seniority strategy and keyword coverage reporting in `analysis.md`
 
-**Does not handle:** Rendering — delegated to `/html-cv`, `/latex-cv`, `/resumx-cv`
+**Does not handle:** Rendering — delegated to `/html-cv`
 
 ## Capabilities
 
@@ -43,4 +43,4 @@ jobs/[company-role]/[YYYY-MM-DD_HH-MM]/
 
 **Before:** `/personal-log` (populate dataset), `/setup-archetypes` (configure archetypes — required for archetype-aware tailoring)
 
-**After:** any renderer — `/html-cv`, `/latex-cv`, `/resumx-cv` — or `/draft-letter` for a cover letter
+**After:** `/html-cv` (renderer) or `/draft-letter` for a cover letter

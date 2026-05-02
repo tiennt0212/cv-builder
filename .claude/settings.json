@@ -32,6 +32,11 @@
             "type": "command",
             "command": "bash .claude/hooks/validate-company-slug.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/validate-skill-registration.sh",
+            "timeout": 10
           }
         ]
       }

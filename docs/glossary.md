@@ -16,7 +16,7 @@ A profile describing the *kind of engineer* a JD is hiring — not the tech stac
 
 The intermediate file (`draft-cv.yaml`) that `/draft-cv` produces. It contains all CV content as structured data — contact info, summary, experience entries with bullets, skills, education — but no formatting decisions.
 
-Renderer commands (`/resumx-cv`, `/latex-cv`, `/html-cv`) read the seed and apply format-specific layout. The seed is the single source of truth for content; renderers make zero content decisions.
+The renderer command (`/html-cv`) reads the seed and applies format-specific layout. The seed is the single source of truth for content; the renderer makes zero content decisions.
 
 ---
 
@@ -39,10 +39,8 @@ jobs/company-role/
   2026-04-07_14-30/        ← run folder
     analysis.md
     draft-cv.yaml
-    resumx-cv/
-      cv.md
-    latex-cv/
-      cv.tex
+    html-cv/
+      cv(harvard).html
 ```
 
 Re-running `/draft-cv` creates a new run folder; old runs are preserved untouched. This lets you compare outputs across runs or after updating your dataset.

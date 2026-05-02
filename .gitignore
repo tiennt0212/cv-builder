@@ -6,3 +6,6 @@ Thumbs.db
 
 # PDF export dependencies
 bin/node_modules/
+
+# Dev harness ephemeral state (never commit)
+.claude/harness/

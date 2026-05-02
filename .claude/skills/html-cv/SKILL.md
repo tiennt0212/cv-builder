@@ -5,7 +5,7 @@ description: >
   opens directly in any browser — no build step required. Use this skill whenever the user
   wants to: generate an HTML or PDF CV from a seed file, render their drafted CV without a
   LaTeX engine, or produce a portable CV using only a browser.
-  Trigger on: "generate HTML CV", "build PDF from seed", "render CV to HTML", "html-cv".
+  Trigger when: "generate HTML CV", "build PDF from seed", "render CV to HTML", "html-cv".
   Do NOT trigger for drafting content — use /draft-cv for that.
 ---
 

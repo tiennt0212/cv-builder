@@ -15,8 +15,6 @@ assignees: ''
 - [ ] `/personal-log` — data ingestion and CV import
 - [ ] `/setup-archetypes` — archetype configuration
 - [ ] `/draft-cv` — JD analysis and seed generation
-- [ ] `/resumx-cv` — ResumeX renderer
-- [ ] `/latex-cv` — LaTeX renderer
 - [ ] `/html-cv` — HTML renderer
 - [ ] `agents-ref/schema.md` — schema / taxonomy
 - [ ] Documentation
