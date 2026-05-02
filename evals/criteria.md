@@ -77,7 +77,7 @@ Reference document for evaluating output quality of cv-builder skills. Use this 
 ### Structure (pass/fail)
 - [ ] First-person narrative — NOT CV format (no bullets, no headers)
 - [ ] 3–4 paragraphs: opening + 2–3 proof paragraphs + closing
-- [ ] Output saved as `draft-letter.yaml` in the application run folder
+- [ ] Output saved as `jobs/[company-role]/[run-timestamp]/draft-letter/draft-letter.yaml`
 
 ### Red flags (automatic fail)
 - Letter is a prose summary of the CV (no narrative, no "why this company")

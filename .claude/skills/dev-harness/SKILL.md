@@ -5,7 +5,7 @@ description: >
   Orchestrates Planner, Implementer, Checker, Eval, and PR sub-agents in an
   OODA loop (Observe → Orient → Decide → Act) with lint-driven remediation.
   Each phase runs in an isolated sub-agent with fresh context; shared state lives
-  in .claude/harness/harness-state.json on disk.
+  in <run-dir>/harness-state.json on disk.
   Trigger when the user says "/dev-harness", "run the harness on", "build this skill
   autonomously", "use the dev harness for", or "harness implement".
   With "--auto" flag: fully autonomous loop, no human checkpoints between phases.
@@ -55,11 +55,19 @@ If no task is provided, stop and ask once before proceeding.
 - Otherwise `auto = false` and the full argument string is the task.
 - If task is empty, ask the user: "What should the harness build or fix?"
 
+**Derive a filesystem-safe timestamp** by running:
+```
+date -Iseconds | sed 's/://g' | sed 's/+.*$//'
+```
+This produces a string like `20260502T192516`. Store this as `<timestamp>`.
+
 **Create working directory:**
 ```
-.claude/harness/
+.claude/harness/<timestamp>/
 ```
-Write `.claude/harness/harness-state.json` with this exact schema:
+This is the run directory for all state files in this harness run. Store the path as `<run-dir>` (e.g. `.claude/harness/20260502T192516`).
+
+Write `<run-dir>/harness-state.json` with this exact schema:
 
 ```json
 {
@@ -68,6 +76,7 @@ Write `.claude/harness/harness-state.json` with this exact schema:
   "iteration": 0,
   "max_iterations": 5,
   "auto": <true|false>,
+  "run_dir": "<run-dir>",
   "target_skills": [],
   "artifacts": [],
   "errors": [],
@@ -90,14 +99,14 @@ Then proceed immediately to Step 1.
 > a structured brief. Do not implement anything. Do not edit skill files.
 >
 > Read these files in order:
-> 1. `.claude/harness/harness-state.json` — your task is in the `task` field
+> 1. `<run-dir>/harness-state.json` — your task is in the `task` field
 > 2. `AGENTS.md` — skills table and authoring rules
 > 3. `evals/criteria.md` — evaluation rubric for all skills
 > 4. Read any `.claude/skills/*/SKILL.md` files relevant to the task. If the task
 >    is broad (e.g. "fix all frontmatter"), read all of them.
 > 5. `agents-ref/schema.md` — enum and tag taxonomy reference
 >
-> Then write `.claude/harness/harness-brief.md` with:
+> Then write `<run-dir>/harness-brief.md` with:
 > - **Task scope**: what is being built or fixed, in 1–3 sentences
 > - **Target skills**: list of `.claude/skills/<name>/SKILL.md` paths to create or modify
 > - **Acceptance criteria**: numbered list, each keyed to a section in `evals/criteria.md`
@@ -106,7 +115,7 @@ Then proceed immediately to Step 1.
 >   evals/criteria.md sections if adding a new skill)
 > - **Risks**: anything that could cause the Implementer to go wrong
 >
-> Finally, update `.claude/harness/harness-state.json`:
+> Finally, update `<run-dir>/harness-state.json`:
 > - Set `target_skills` to the list of skill names the Implementer will touch
 >   (just the names, not paths; e.g. `["html-cv", "draft-cv"]`)
 > - Append to `artifacts`: `{ "phase": "planner", "iteration": 0, "file": "harness-brief.md", "status": "written" }`
@@ -114,11 +123,11 @@ Then proceed immediately to Step 1.
 
 **After the Agent tool returns:**
 
-Read `.claude/harness/harness-state.json` to confirm `target_skills` is populated
-and `harness-brief.md` exists.
+Read `<run-dir>/harness-state.json` to confirm `target_skills` is populated
+and `<run-dir>/harness-brief.md` exists.
 
 If `auto = false`:
-> "Planner complete. Review `.claude/harness/harness-brief.md` then reply 'continue'
+> "Planner complete. Review `<run-dir>/harness-brief.md` then reply 'continue'
 > to proceed to Implementer."
 > Wait for user confirmation before continuing.
 
@@ -128,7 +137,7 @@ If `auto = true`: proceed immediately to Step 2.
 
 ## Step 2 — Implementer phase (loop entry point)
 
-Read `harness-state.json`. Note the current `iteration` value.
+Read `<run-dir>/harness-state.json`. Note the current `iteration` value.
 
 **Spawn the Implementer sub-agent** using the Agent tool. The sub-agent prompt must say:
 
@@ -137,14 +146,14 @@ Read `harness-state.json`. Note the current `iteration` value.
 > features beyond what it specifies.
 >
 > Read these files in order:
-> 1. `.claude/harness/harness-state.json` — read `target_skills`, `task`, and `errors`
-> 2. `.claude/harness/harness-brief.md` — acceptance criteria and update obligations
+> 1. `<run-dir>/harness-state.json` — read `target_skills`, `task`, and `errors`
+> 2. `<run-dir>/harness-brief.md` — acceptance criteria and update obligations
 > 3. `AGENTS.md` — authoring rules, skills table
 > 4. `agents-ref/schema.md` — enum values and tag taxonomy (do NOT duplicate these in
 >    skill files; reference schema.md instead)
 > 5. For each skill in `target_skills`: read its current `.claude/skills/<name>/SKILL.md`
 >
-> **If iteration > 0**: also read the `errors` array from harness-state.json.
+> **If iteration > 0**: also read the `errors` array from `<run-dir>/harness-state.json`.
 > Filter to errors where `iteration == <N-1>`. These are the lint failures from the
 > last Checker run. Fix each one explicitly before finishing.
 >
@@ -159,7 +168,7 @@ Read `harness-state.json`. Note the current `iteration` value.
 > - Do NOT run lint-toolkit. Do NOT score evals. Do NOT draft the PR. Those are other phases.
 >
 > After editing:
-> - Update `.claude/harness/harness-state.json`:
+> - Update `<run-dir>/harness-state.json`:
 >   - Set `phase: "checker"`
 >   - For each file written, append to `artifacts`:
 >     `{ "phase": "implementer", "iteration": <N>, "file": "<path>", "status": "written" }`
@@ -184,7 +193,7 @@ Proceed to Step 3.
 > lint-toolkit checks for the skills section only.
 >
 > Read these files in order:
-> 1. `.claude/harness/harness-state.json` — read `target_skills` and current `iteration`
+> 1. `<run-dir>/harness-state.json` — read `target_skills` and current `iteration`
 > 2. `.claude/skills/lint-toolkit/SKILL.md` — your audit checklist (use Section A only:
 >    Skills integrity, checks A1, A2, A3)
 > 3. `agents-ref/schema.md` — enum values and stack naming convention (for A3 check)
@@ -206,7 +215,7 @@ Proceed to Step 3.
 > ```
 >
 > After checking all target skills:
-> - Update `.claude/harness/harness-state.json`:
+> - Update `<run-dir>/harness-state.json`:
 >   - Append all findings to the `errors` array (do NOT replace existing entries —
 >     prior iterations' errors must be preserved for Implementer history)
 >   - Set `phase: "decision"`
@@ -214,13 +223,13 @@ Proceed to Step 3.
 > - Print a summary: "Checker iteration <N>: <X> ERRORs, <Y> WARNs, <Z> INFOs"
 
 **After the Agent tool returns**, the orchestrator (you, not a sub-agent) reads
-`harness-state.json` and runs the decision gate in Step 4.
+`<run-dir>/harness-state.json` and runs the decision gate in Step 4.
 
 ---
 
 ## Step 4 — Decision gate (orchestrator logic, not a sub-agent)
 
-Read `harness-state.json`. You are the orchestrator. Apply this logic:
+Read `<run-dir>/harness-state.json`. You are the orchestrator. Apply this logic:
 
 ```
 current_errors = [e for e in state.errors if e.iteration == state.iteration and e.severity == "ERROR"]
@@ -238,7 +247,7 @@ elif state.iteration >= state.max_iterations - 1:
     print "Harness stopped: max iterations (<max_iterations>) reached."
     print "Remaining ERRORs:"
     for e in current_errors: print "  [<e.skill>/<e.check>] <e.message>"
-    print "Review .claude/harness/harness-state.json for full history."
+    print "Review <run-dir>/harness-state.json for full history."
     STOP — do not proceed to eval or PR
 
 else:
@@ -266,9 +275,9 @@ and surfaced in the PR description.
 > skill files against the eval rubric. Do not edit any files.
 >
 > Read these files in order:
-> 1. `.claude/harness/harness-state.json` — read `target_skills`
+> 1. `<run-dir>/harness-state.json` — read `target_skills`
 > 2. `evals/criteria.md` — full rubric
-> 3. `.claude/harness/harness-brief.md` — acceptance criteria from the Planner
+> 3. `<run-dir>/harness-brief.md` — acceptance criteria from the Planner
 > 4. For each skill in `target_skills`: read `.claude/skills/<name>/SKILL.md`
 >
 > For each skill, check:
@@ -283,7 +292,7 @@ and surfaced in the PR description.
 >
 > If no criteria.md section exists for a skill, score only the three universal checks above.
 >
-> Populate `eval_scores` in `.claude/harness/harness-state.json`:
+> Populate `eval_scores` in `<run-dir>/harness-state.json`:
 > ```json
 > {
 >   "<skill-name>": {
@@ -301,7 +310,7 @@ and surfaced in the PR description.
 **After the Agent tool returns:**
 
 If `auto = false`:
-> "Eval complete. Review scores in `.claude/harness/harness-state.json` under `eval_scores`.
+> "Eval complete. Review scores in `<run-dir>/harness-state.json` under `eval_scores`.
 > Reply 'continue' to proceed to PR drafting."
 > Wait for user confirmation.
 
@@ -315,8 +324,8 @@ If `auto = false`:
 > and draft a PR description. Do not edit skill files.
 >
 > Read these files in order:
-> 1. `.claude/harness/harness-state.json` — full state including artifacts, errors, eval_scores
-> 2. `.claude/harness/harness-brief.md` — original acceptance criteria and update obligations
+> 1. `<run-dir>/harness-state.json` — full state including artifacts, errors, eval_scores
+> 2. `<run-dir>/harness-brief.md` — original acceptance criteria and update obligations
 > 3. `AGENTS.md` — skills table
 >
 > **Validate completeness before drafting:**
@@ -326,11 +335,11 @@ If `auto = false`:
 >   "PR BLOCKED: skill(s) [names] not registered in AGENTS.md. Add them first."
 > - Every artifact with `status: "written"` must exist as an actual file on disk.
 >   Check with Read. If any are missing, list them as blockers.
-> - Check every update obligation from `harness-brief.md`. If any is unfulfilled
+> - Check every update obligation from the run directory's `harness-brief.md`. If any is unfulfilled
 >   (e.g. evals/criteria.md section missing for a new skill), list it as a gap —
 >   note it in the PR description rather than blocking.
 >
-> **Draft the PR description** into `.claude/harness/harness-state.json` under `pr_description`:
+> **Draft the PR description** into `<run-dir>/harness-state.json` under `pr_description`:
 >
 > ```
 > ## What changed
@@ -360,7 +369,7 @@ If `auto = false`:
 
 ## Step 7 — Completion
 
-Read `.claude/harness/harness-state.json`. Print the `pr_description` field as the
+Read `<run-dir>/harness-state.json`. Print the `pr_description` field as the
 final output, prefixed with:
 
 ```
@@ -373,7 +382,7 @@ Modified files (stage these for commit):
 
 Then print the full list of modified files for easy `git add`.
 
-The harness working directory `.claude/harness/` is ephemeral — it can be deleted
+The harness run directory `.claude/harness/<timestamp>/` is ephemeral — it can be deleted
 after the PR is merged. Its files are not committed.
 
 ---
@@ -386,4 +395,4 @@ after the PR is merged. Its files are not committed.
 | Checker sub-agent returns without updating `errors` in state | Treat as 0 errors found, proceed to Eval. Log a warning. |
 | PR sub-agent returns with "PR BLOCKED" output | Print the blocker list. Do not print a PR description. Stop. |
 | Max iterations reached | Print remaining errors, stop. Do not draft a partial PR. |
-| `harness-state.json` missing at any phase entry | Stop and ask the user to re-run from the beginning: `/dev-harness [--auto] <task>` |
+| `harness-state.json` missing at any phase entry (run directory not found) | Stop and ask the user to re-run from the beginning: `/dev-harness [--auto] <task>` |
