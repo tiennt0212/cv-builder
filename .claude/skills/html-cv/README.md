@@ -42,5 +42,3 @@ The simplest possible path from seed to a shareable CV. No LaTeX installation, n
 ## Works with
 
 **Before:** `/draft-cv` (produces the seed)
-
-**Also renders:** `/latex-cv` and `/resumx-cv` are alternative renderers for the same seed — use them when PDF typeset quality or a browser playground workflow is preferred instead

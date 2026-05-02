@@ -105,35 +105,20 @@ Reference document for evaluating output quality of cv-builder skills. Use this 
 
 ---
 
-## Renderers (`/html-cv`, `/latex-cv`, `/resumx-cv`) — Evaluation Criteria
+## Renderer (`/html-cv`) — Evaluation Criteria
 
-Renderers make **zero content decisions** — they only apply format-specific styling to a seed YAML. Criteria here are format-only.
+The renderer makes **zero content decisions** — it only applies format-specific styling to a seed YAML. Criteria here are format-only.
 
 ### Schema Fidelity (pass/fail)
 - [ ] All sections present in seed YAML are rendered in output
 - [ ] Optional fields (awards, publications, certifications) are omitted entirely when absent — not rendered as empty sections
 - [ ] Date format uses en-dash (2022–2024), not hyphen
 
-### ATS / Format Compliance (pass/fail — `/resumx-cv` and `/latex-cv` only)
-- [ ] No tables, columns, or multi-column layouts
-- [ ] No inline images or icon characters
-- [ ] Links are anchor-text based, not raw URLs
-
-### Renderer-specific checks
-
-**`/html-cv`:**
+### `/html-cv` checks (pass/fail)
 - [ ] Opens correctly in browser with no build step
 - [ ] Print → Save as PDF produces clean single-column output
 - [ ] `**bold**` in seed rendered as `<strong>`, not literal asterisks
 - [ ] HTML entities escaped (`&`, `<`, `>`)
-
-**`/latex-cv`:**
-- [ ] Compiles on Overleaf with XeLaTeX without errors
-- [ ] Uses `\setmainfont{EB Garamond}` — no `Path=` or local font file references
-
-**`/resumx-cv`:**
-- [ ] Output is valid Markdown paste-able into ResumeX playground
-- [ ] No LaTeX-specific commands or HTML tags in output
 
 ---
 
@@ -174,11 +159,9 @@ Run with candidate's actual `personal-data/projects/` dataset.
 | Dataset coverage warning | Any archetype with <2 supporting projects flagged |
 | User review step | YAML preview shown before file is written |
 
-### For renderers
-Run each renderer against the seed YAML produced by the `/draft-cv` test above.
+### For the renderer
+Run the renderer against the seed YAML produced by the `/draft-cv` test above.
 
 | Command | Input | Check |
 |---------|-------|-------|
 | `/html-cv` | `draft-cv.yaml` | Opens in browser, prints cleanly |
-| `/latex-cv` | `draft-cv.yaml` | Compiles with `xelatex` without errors |
-| `/resumx-cv` | `draft-cv.yaml` | Valid Markdown for ResumeX playground |

@@ -41,7 +41,7 @@ not a reconstructed summary of prior turns.
 - `--auto` (optional): suppresses all human checkpoints; runs phases back-to-back
   until done or max_iterations reached.
 - `<task description>`: free-form description of what to build or improve.
-  Examples: "add a new skill for X", "fix frontmatter in the latex-cv skill",
+  Examples: "add a new skill for X", "fix frontmatter in the html-cv skill",
   "improve bullet quality guidance in draft-cv".
 
 If no task is provided, stop and ask once before proceeding.
@@ -108,7 +108,7 @@ Then proceed immediately to Step 1.
 >
 > Finally, update `.claude/harness/harness-state.json`:
 > - Set `target_skills` to the list of skill names the Implementer will touch
->   (just the names, not paths; e.g. `["latex-cv", "draft-cv"]`)
+>   (just the names, not paths; e.g. `["html-cv", "draft-cv"]`)
 > - Append to `artifacts`: `{ "phase": "planner", "iteration": 0, "file": "harness-brief.md", "status": "written" }`
 > - Update `updated_at` to current ISO8601 timestamp
 

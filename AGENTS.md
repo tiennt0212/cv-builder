@@ -12,7 +12,7 @@ Each user uses skills to maintain a structured dataset of their own work experie
 - `personal-data/profile.md` — candidate's personal info, skills, education, awards (created by the `personal-log` skill from `agents-ref/profile-template.md`)
 - `personal-data/companies/*.md` — one file per employer
 - `personal-data/projects/*.md` — one file per project/role
-- `jobs/[company-role]/` — output files land here. Each application folder contains a `YYYY-MM-DD_HH-MM_jd.md` (saved manually) and one timestamped subfolder per `draft-cv` run containing `analysis.md` + `draft-cv.yaml`. Renderer outputs go into further subfolders (`resumx-cv/`, `latex-cv/`, `html-cv/`) inside the run folder.
+- `jobs/[company-role]/` — output files land here. Each application folder contains a `YYYY-MM-DD_HH-MM_jd.md` (saved manually) and one timestamped subfolder per `draft-cv` run containing `analysis.md` + `draft-cv.yaml`. Renderer outputs go into further subfolders (`html-cv/`) inside the run folder.
 - `agents-ref/archetypes.yaml` — live archetype data, populated by the `setup-archetypes` skill. Run once before first `draft-cv` use. Archetype field schema is documented in `agents-ref/schema.md`.
 - `.claude/skills/` — skill instruction files (canonical source). Claude Code reads from here.
 - `.agents/skills/` — symlink to `.claude/skills/`; read by all other Agent Skills-compatible agents (Cursor, Gemini CLI, Codex, etc.).
@@ -25,7 +25,7 @@ The system has three layers. Each layer has a strict responsibility boundary:
 
 2. **`draft-cv`** — selects, filters, aggregates, and transforms data into a seed YAML. It decides *what* goes into the CV and *how it is structured*: which projects to include, which bullets to write, how to group experience, whether to show role progression. The seed contains actual prose.
 
-3. **Renderer skills** (`resumx-cv`, `latex-cv`, etc.) — take a seed YAML and apply format-specific styling. They make *zero content decisions*. Layout, heading style, date format, link rendering — all theirs. Content — not theirs.
+3. **Renderer skills** (`html-cv`, etc.) — take a seed YAML and apply format-specific styling. They make *zero content decisions*. Layout, heading style, date format, link rendering — all theirs. Content — not theirs.
 
 **Rule:** if a decision affects what the reader learns, it belongs in `draft-cv`. If it only affects how it looks, it belongs in the renderer.
 
@@ -38,8 +38,6 @@ Skills are the primary way to interact with this toolkit. Claude Code invokes th
 | `personal-log` | Add or update career data — projects, companies, certifications, skills, etc. |
 | `setup-archetypes` | Define target role archetypes in `agents-ref/archetypes.yaml`. Run once; re-run when target roles change. |
 | `draft-cv` | Analyse a JD, score projects, detect archetype, produce `analysis.md` + `draft-cv.yaml` |
-| `resumx-cv` | Render seed to ResumeX-compatible Markdown — paste into the browser playground for PDF |
-| `latex-cv` | Render seed to a compilable LaTeX `.tex` file (Harvard style) — compile via Overleaf |
 | `html-cv` | Render seed to browser-previewable HTML — export PDF via browser print or `./html-to-pdf` |
 | `draft-letter` | Draft a tailored cover letter from a prior `draft-cv` run — produces `draft-letter.yaml` |
 | `html-letter` | Render `draft-letter.yaml` into a browser-previewable HTML cover letter |

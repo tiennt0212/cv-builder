@@ -35,7 +35,7 @@ evals/
 1. **`/draft-cv`** — run against each file in `sample-jds/`, score with the `/draft-cv` rubric in `criteria.md`
 2. **`/personal-log`** — run with each file in `sample-projects/` as the user input, score with the `/personal-log` rubric
 3. **`/draft-letter`** — run after a `/draft-cv` pass on `sample-jds/product-startup.md`, use `sample-motivations/motivation-startup.md` as motivation input
-4. **Renderers** — run `/html-cv`, `/latex-cv`, `/resumx-cv` against the seed YAML produced in step 1
+4. **Renderer** — run `/html-cv` against the seed YAML produced in step 1
 
 ## Adding new evals
 

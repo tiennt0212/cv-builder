@@ -93,8 +93,6 @@ Verify both chains are intact end-to-end.
 ```
 /draft-cv → draft-cv.yaml (schema: .claude/skills/draft-cv/schema.yaml)
           → /html-cv     reads draft-cv.yaml
-          → /latex-cv    reads draft-cv.yaml
-          → /resumx-cv   reads draft-cv.yaml
 ```
 
 **Chain B — Cover letter:**
@@ -104,7 +102,7 @@ Verify both chains are intact end-to-end.
 /html-letter  reads draft-letter.yaml
 ```
 
-For CV renderer skills (`html-cv`, `latex-cv`, `resumx-cv`):
+For the CV renderer skill (`html-cv`):
 - Does it reference `.claude/skills/draft-cv/schema.yaml` as the seed schema? If not → WARN
 - Does it read `draft-cv.yaml` as input? If wrong → ERROR
 
@@ -202,9 +200,6 @@ generated CV has no styling.
 **For each theme name found in `html-letter` SKILL.md** (currently `modern`):
 - `.claude/skills/html-letter/themes/{name}/instructions.md` exists → ERROR if missing
 - `themes/{name}/letter.css` exists → ERROR if missing
-
-**For each theme name found in `latex-cv` SKILL.md** (currently `harvard`):
-- `.claude/skills/latex-cv/themes/{name}/template.tex` exists → ERROR if missing
 
 If theme directories exist in `themes/` but no skill references them → INFO (may be unused).
 
@@ -374,7 +369,6 @@ Format the report grouped by section. Sections with no issues get a single ✓ l
   html-cv → harvard ✓
   html-cv → modern ✓
   html-letter → modern ✓
-  latex-cv → harvard ✓
 
 ### D — bin/ + html-to-pdf
   ✓ No issues found

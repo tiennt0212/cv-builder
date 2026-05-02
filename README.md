@@ -27,8 +27,6 @@ flowchart LR
     subgraph renderers ["Renderers"]
         direction TB
         html["/html-cv → PDF"]
-        latex["/latex-cv → .tex"]
-        resumx["/resumx-cv → Markdown"]
     end
 
     JD --> draft
@@ -38,7 +36,7 @@ flowchart LR
 
 - `personal-data/` — raw facts about your career. Format-agnostic. Never tailored to any specific job.
 - `/draft-cv` — analyses the JD, scores projects, detects archetype, and produces a seed YAML with actual CV prose.
-- Renderers (`/resumx-cv`, `/latex-cv`, `/html-cv`) — take the seed and apply format-specific layout. Zero content decisions.
+- Renderer (`/html-cv`) — takes the seed and applies format-specific layout. Zero content decisions.
 
 ## Setup
 
@@ -71,8 +69,6 @@ Skills follow the [Agent Skills open standard](https://agentskills.io/specificat
 | `/personal-log` | Add or update career data — projects, companies, certifications, skills, etc. |
 | `/setup-archetypes` | Define your target role archetypes in `agents-ref/archetypes.yaml`. Run once; re-run when target roles change. |
 | `/draft-cv [JD]` | Analyse a JD, score projects, detect archetype, produce `analysis.md` + `draft-cv.yaml` |
-| `/resumx-cv [seed]` | Render seed to ResumeX-compatible Markdown — paste into the browser playground for PDF |
-| `/latex-cv [seed]` | Render seed to a compilable LaTeX `.tex` file (Harvard style) — compile via Overleaf |
 | `/html-cv [seed]` | Render seed to browser-previewable HTML — preview in browser; export PDF via browser print or `./html-to-pdf` for clickable links |
 | `/draft-letter` | Draft a tailored cover letter from a prior `/draft-cv` run — produces `draft-letter.yaml` |
 | `/html-letter [seed]` | Render `draft-letter.yaml` into a browser-previewable HTML cover letter |
@@ -99,8 +95,6 @@ jobs/tnt_lab-frontend_engineer/
   2026-04-07_14-30/                ← run folder (one per /draft-cv run)
     analysis.md                    ← decision log
     draft-cv.yaml                  ← seed
-    resumx-cv/cv.md                ← added by /resumx-cv
-    latex-cv/cv.tex                ← added by /latex-cv
     html-cv/cv(harvard).html       ← added by /html-cv
 ```
 

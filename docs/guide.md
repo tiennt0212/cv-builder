@@ -32,12 +32,8 @@ flowchart TD
     draftletter --> renderer{Pick renderer}
 
     renderer --> html["/html-cv\nHTML preview + PDF export"]
-    renderer --> latex["/latex-cv\nLaTeX .tex"]
-    renderer --> resumx["/resumx-cv\nResumeX Markdown"]
 
     html --> done([PDF ready])
-    latex --> done
-    resumx --> done
 ```
 
 > **One-time:** `/setup-archetypes` — re-run only when your target role type changes.
@@ -113,7 +109,7 @@ Run these once when you first clone the repo. You won't need them again unless y
 |------|---------|--------------|
 | 1 | `/draft-cv [JD]` | Paste the JD — analyses it, scores projects, produces `analysis.md` + `draft-cv.yaml` |
 | 2 | `/draft-letter` *(optional)* | Drafts a cover letter from the same analysis |
-| 3 | Pick a renderer | `/html-cv`, `/latex-cv`, or `/resumx-cv` — see below |
+| 3 | Run the renderer | `/html-cv` — see below |
 
 ---
 
@@ -122,8 +118,6 @@ Run these once when you first clone the repo. You won't need them again unless y
 | Command | Best for | Requirement |
 |---------|----------|-------------|
 | `/html-cv` | Browser preview + PDF export. `./html-to-pdf` produces PDF with clickable links | `npm install` in `bin/` (once) for `./html-to-pdf`; browser print needs nothing |
-| `/latex-cv` | Highest typographic quality | Overleaf (no local TeX engine needed) |
-| `/resumx-cv` | Alternative preview via browser playground | None |
 | `/html-letter` | Cover letter HTML preview + PDF export (use after `/draft-letter`) | None |
 
 ---
@@ -132,7 +126,7 @@ Run these once when you first clone the repo. You won't need them again unless y
 
 **Every application:**
 - `/draft-cv` — always; paste the JD directly
-- A renderer (`/html-cv`, `/latex-cv`, `/resumx-cv`) — whichever format the role needs
+- `/html-cv` — render the seed to HTML for browser preview and PDF export
 
 **Occasionally:**
 - `/personal-log` — after finishing a project, changing jobs, or earning a certification
