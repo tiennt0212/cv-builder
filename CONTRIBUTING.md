@@ -4,7 +4,7 @@ Thank you for your interest in contributing! This is a prompt-engineering and AI
 
 ## What contributions are welcome
 
-- **New renderer themes** — new visual styles for `/html-cv`
+- **New renderer themes** — new visual styles for `./bin/render-cv` and `./bin/render-letter` (see *Adding a new theme* below)
 - **Skill improvements** — better prompt logic in `.claude/skills/`
 - **Schema evolution** — new tags, enums, or section rules in `agents-ref/schema.md`
 - **Documentation** — clearer `docs/`, `evals/`, or inline instructions
@@ -43,6 +43,48 @@ When improving a skill or command file:
 - Keep `agents-ref/schema.md` as the authority — reference it, don't copy it
 
 **Skill file location:** skills live in `.claude/skills/[skill-name]/SKILL.md`. `.agents/skills/` is a symlink to `.claude/skills/` — add new skills under `.claude/skills/` and they are automatically available to all agents (Cursor, Gemini CLI, Codex, etc.).
+
+## Adding a new theme
+
+Themes are deterministic — they are pure files, not skills, and the renderer scripts (`./bin/render-cv`, `./bin/render-letter`) discover them by directory name.
+
+**A new CV theme requires only two files:**
+
+```
+themes/<your-theme-name>/
+  template.hbs   ← Handlebars template producing the full HTML document
+  style.css      ← stylesheet linked from the template via {{_stylePath}}
+```
+
+Then add the theme name to the `VALID_THEMES` array in `bin/render-cv` (one-line edit) so the CLI accepts it.
+
+**A new letter theme requires:**
+
+```
+themes/<your-theme-name>/
+  letter.hbs     ← Handlebars template
+  letter.css     ← stylesheet
+```
+
+…and an entry in `bin/render-letter`'s `VALID_THEMES`.
+
+### Template authoring conventions
+
+- Use `{{md field}}` for prose fields that may contain `**bold**` markers (bullets, summary, descriptions). The `md` helper escapes HTML entities then converts `**...**` to `<strong>...</strong>`.
+- Use `{{field}}` for plain text — Handlebars auto-escapes.
+- Wrap every optional field in `{{#if field}}...{{/if}}` so missing data produces no empty `<div>` / `<li>`.
+- Use the en-dash `–` (U+2013) directly between `{{start}}` and `{{end}}` in date ranges.
+- Link the theme stylesheet via `<link rel="stylesheet" href="{{_stylePath}}">` in `<head>` — the renderer computes the correct relative path from the output file to `themes/<theme>/style.css` (or `letter.css`).
+- No inline `<style>` blocks — keep all styling in the CSS file so users can swap themes without editing HTML.
+
+### Testing a new theme
+
+```sh
+./bin/render-cv jobs/<example-app>/<run>/draft-cv.yaml --theme <your-theme-name>
+open jobs/<example-app>/<run>/html-cv/cv\(<your-theme-name>\).html
+```
+
+Confirm in the browser that all sections present in the seed are rendered, no empty elements appear for missing optional fields, and `**bold**` text becomes `<strong>`.
 
 ## License
 

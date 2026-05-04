@@ -16,7 +16,7 @@ assignees: ''
 
 ## Steps to reproduce
 
-1. Command used: `/draft-cv` / `/personal-log` / `/html-cv` / other: ___
+1. Command used: `/draft-cv` / `/personal-log` / `./bin/render-cv` / `./bin/render-letter` / other: ___
 2. Input provided: <!-- paste the JD snippet, project name, or relevant input -->
 3. Output received: <!-- paste the incorrect output -->
 

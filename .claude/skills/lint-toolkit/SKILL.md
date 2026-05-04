@@ -91,26 +91,24 @@ Verify both chains are intact end-to-end.
 
 **Chain A — CV generation:**
 ```
-/draft-cv → draft-cv.yaml (schema: .claude/skills/draft-cv/schema.yaml)
-          → /html-cv     reads draft-cv.yaml
+/draft-cv          → draft-cv.yaml (schema: .claude/skills/draft-cv/schema.yaml)
+./bin/render-cv    reads draft-cv.yaml + themes/<theme>/template.hbs → cv(<theme>).html
 ```
 
 **Chain B — Cover letter:**
 ```
-/draft-cv    → analysis.md + draft-cv.yaml
-/draft-letter reads analysis.md + draft-cv.yaml → draft-letter.yaml
-/html-letter  reads draft-letter.yaml
+/draft-cv             → analysis.md + draft-cv.yaml
+/draft-letter         reads analysis.md + draft-cv.yaml → draft-letter.yaml
+./bin/render-letter   reads draft-letter.yaml + themes/<theme>/letter.hbs → letter(<theme>).html
 ```
 
-For the CV renderer skill (`html-cv`):
-- Does it reference `.claude/skills/draft-cv/schema.yaml` as the seed schema? If not → WARN
-- Does it read `draft-cv.yaml` as input? If wrong → ERROR
+For the CV renderer CLI (`bin/render-cv`):
+- The script must exist at `bin/render-cv` and be executable → ERROR if missing or not +x
+- It must require `themes/<theme>/template.hbs` and `themes/<theme>/style.css` for each advertised theme → ERROR if either file missing
 
-For the letter renderer skill (`html-letter`):
-- Does it reference `.claude/skills/draft-letter/SKILL.md` Step 8 for the `draft-letter.yaml`
-  field specification? If not → WARN (note: `html-letter` consumes `draft-letter.yaml`, not
-  `draft-cv.yaml` — requiring it to cite `draft-cv/schema.yaml` would be wrong)
-- Does it read `draft-letter.yaml` as input? If wrong → ERROR
+For the letter renderer CLI (`bin/render-letter`):
+- The script must exist at `bin/render-letter` and be executable → ERROR if missing or not +x
+- It must require `themes/<theme>/letter.hbs` and `themes/<theme>/letter.css` for each advertised theme → ERROR if either file missing
 
 For `draft-letter`:
 - Does it produce `draft-letter.yaml`? If different output name → ERROR
@@ -184,38 +182,45 @@ check. But if it exists, verify its structure matches the archetype schema defin
 
 ## Step 4 — Section C: Themes integrity
 
-The theme system has two distinct layers that must stay in sync:
-1. **AI instruction files** at `.claude/skills/{skill}/themes/{name}/` — tell the AI agent how to
-   generate the HTML/LaTeX structure for that theme
-2. **CSS/template assets** at `themes/{name}/` — the actual stylesheets referenced by
-   generated HTML files
+Themes live entirely under `themes/<name>/`. Each theme must ship the two files its renderer needs:
 
-Both layers must exist for a theme to work end-to-end. A missing CSS file means the user's
-generated CV has no styling.
+- **CV themes** must have both `themes/<name>/template.hbs` and `themes/<name>/style.css`
+- **Letter themes** must have both `themes/<name>/letter.hbs` and `themes/<name>/letter.css`
 
-**For each theme name found in `html-cv` SKILL.md** (currently `harvard` and `modern`):
-- `.claude/skills/html-cv/themes/{name}/instructions.md` exists → ERROR if missing
+Both files are required for a theme to work end-to-end. A missing CSS file means the user's generated CV has no styling; a missing `.hbs` file means the renderer will exit 1 with "template not found".
+
+**For each CV theme advertised in `bin/render-cv`'s `VALID_THEMES` (currently `harvard` and `modern`):**
+- `themes/{name}/template.hbs` exists → ERROR if missing
 - `themes/{name}/style.css` exists → ERROR if missing
 
-**For each theme name found in `html-letter` SKILL.md** (currently `modern`):
-- `.claude/skills/html-letter/themes/{name}/instructions.md` exists → ERROR if missing
+**For each letter theme advertised in `bin/render-letter`'s `VALID_THEMES` (currently `modern`):**
+- `themes/{name}/letter.hbs` exists → ERROR if missing
 - `themes/{name}/letter.css` exists → ERROR if missing
 
-If theme directories exist in `themes/` but no skill references them → INFO (may be unused).
+If theme directories exist in `themes/` but neither renderer advertises them → INFO (may be unused).
 
 ---
 
-## Step 5 — Section D: bin/ + html-to-pdf script chain + agent symlink
+## Step 5 — Section D: bin/ scripts + agent symlink
 
-The `./html-to-pdf` script is the recommended PDF export path. Its chain is:
-`html-to-pdf` (root) → `bin/build-cv.js` → `bin/package.json` dependencies
+`bin/` ships three scripts. Their chains:
+
+- `./bin/render-cv` (Node CLI) → `bin/lib/render-common.js` + `bin/lib/md-helper.js` + `themes/<theme>/template.hbs` + `themes/<theme>/style.css`
+- `./bin/render-letter` (Node CLI) → same `bin/lib/*` + `themes/<theme>/letter.hbs` + `themes/<theme>/letter.css`
+- `./html-to-pdf` (root shell) → `bin/build-cv.js` (Puppeteer)
+
+All require `bin/package.json` dependencies installed via `cd bin && npm install`.
 
 | Check | Severity | Description |
 |-------|----------|-------------|
-| `html-to-pdf` script exists at repo root | ERROR | Users can't export PDF; CLAUDE.md references it |
-| `bin/build-cv.js` exists | ERROR | `html-to-pdf` calls this directly; missing → runtime error |
-| `bin/package.json` exists | ERROR | Required for `npm install` — without it, dependencies can't be installed |
-| `html-to-pdf` references `bin/build-cv.js` by correct relative path | WARN | If the path in the script doesn't match the actual file location, it will fail on any machine |
+| `bin/render-cv` exists and is executable | ERROR | Primary CV renderer; without it `/draft-cv`'s Next Step fails |
+| `bin/render-letter` exists and is executable | ERROR | Primary letter renderer; without it `/draft-letter`'s Next Step fails |
+| `bin/lib/render-common.js` exists | ERROR | Shared by both renderers |
+| `bin/lib/md-helper.js` exists | ERROR | Required by render-common.js |
+| `bin/package.json` declares `handlebars` and `js-yaml` | ERROR | Without them the renderers exit 2 with the friendly "run npm install" message |
+| `html-to-pdf` script exists at repo root | ERROR | Optional PDF export path; AGENTS.md references it |
+| `bin/build-cv.js` exists | ERROR | `html-to-pdf` calls this directly |
+| `bin/package.json` declares `puppeteer` | ERROR | Required for the PDF export path |
 
 **Agent symlink integrity:**
 
@@ -358,7 +363,6 @@ Format the report grouped by section. Sections with no issues get a single ✓ l
   draft-cv/SKILL.md
   - [WARN]  A3: hardcodes type enum values inline — should cite agents-ref/schema.md
   - [ERROR] A6: contains personal email address — remove before committing
-  html-cv/SKILL.md ✓
   personal-log/SKILL.md ✓
   ... (one line per clean skill)
 
@@ -366,11 +370,16 @@ Format the report grouped by section. Sections with no issues get a single ✓ l
   - [ERROR] B: agents-ref/project-template.md referenced by personal-log but does not exist
 
 ### C — Themes
-  html-cv → harvard ✓
-  html-cv → modern ✓
-  html-letter → modern ✓
+  themes/harvard/template.hbs ✓
+  themes/harvard/style.css ✓
+  themes/modern/template.hbs ✓
+  themes/modern/style.css ✓
+  themes/modern/letter.hbs ✓
+  themes/modern/letter.css ✓
 
-### D — bin/ + html-to-pdf
+### D — bin/ (render-cv, render-letter, html-to-pdf)
+  bin/render-cv ✓
+  bin/render-letter ✓
   ✓ No issues found
 
 ### E — docs/ alignment

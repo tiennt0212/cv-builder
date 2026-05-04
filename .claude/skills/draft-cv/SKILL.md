@@ -7,12 +7,12 @@ description: >
   generate application materials, or run /draft-cv.
   Trigger when the user provides a JD and asks to create or draft a CV,
   or says "draft my CV", "tailor my CV for this role", "apply for this job".
-  Do NOT trigger for rendering — rendering is handled by /html-cv.
+  Do NOT trigger for rendering — rendering is handled by the deterministic CLI `./bin/render-cv`.
 ---
 
 # Draft Tailored CV
 
-Analyse a Job Description and draft tailored CV content from the personal-data/ directory. Produces `analysis.md` + `draft-cv.yaml`. Rendering is handled by `/html-cv`.
+Analyse a Job Description and draft tailored CV content from the personal-data/ directory. Produces `analysis.md` + `draft-cv.yaml`. Rendering is handled by `./bin/render-cv` (deterministic Node.js + Handlebars CLI; no AI involvement).
 
 ## Arguments
 $ARGUMENTS — JD text pasted directly, or a file path to a JD file. If a file path is provided, read the file first.
@@ -445,7 +445,7 @@ jobs/[company_slug]-[role_slug]/
 
 Run `date +"%Y-%m-%d_%H-%M"` via Bash to get the current timestamp for the subfolder name. Never guess or infer the time.
 
-`draft-cv` creates the timestamped subfolder and writes `analysis.md` + `draft-cv.yaml` into it. The renderer command (`/html-cv`) reads the seed and saves its output into a further subfolder inside that same run folder.
+`draft-cv` creates the timestamped subfolder and writes `analysis.md` + `draft-cv.yaml` into it. The renderer CLI (`./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard|modern>`) reads the seed and saves its output into a `html-cv/` subfolder inside that same run folder.
 
 **JD**: `YYYY-MM-DD_HH-MM_jd.md` lives at the application root. The timestamp records when the JD was first saved, providing a timeline of when each activity happened. If no JD file exists yet, remind the user to save it there for tracking history.
 
@@ -544,7 +544,7 @@ Run `date +"%Y-%m-%d_%H-%M"` via Bash to get the current timestamp for the subfo
    - For soft gaps: a specific reformulation to use in the seed
    - For false gaps: the exact rename to apply
 
-9. `## Next Step` — reminder to run `/html-cv`
+9. `## Next Step` — reminder to run `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard|modern>`
 
 **Example — first run, then rendered:**
 ```
@@ -554,8 +554,8 @@ jobs/tnt_lab-frontend_react/
     analysis.md
     draft-cv.yaml
     html-cv/
-      cv(harvard).html       ← added by /html-cv (theme in filename)
-      cv(modern).html        ← added by /html-cv --theme modern
+      cv(harvard).html       ← added by ./bin/render-cv ... --theme harvard
+      cv(modern).html        ← added by ./bin/render-cv ... --theme modern
 ```
 
 **Example — re-run after updating dataset:**
@@ -580,4 +580,4 @@ After writing the files, output a brief summary:
 - **JD keywords mirrored**: key terms used and where they appear
 - **Gaps flagged**: any JD-required skill with no matching evidence in the dataset — these are honest gaps the user should consider addressing
 - **Match tier**: state the overall match tier (HIGH / MEDIUM / LOW) and one sentence summarising which dimension(s) drove the classification. If the user confirmed a LOW-tier match, note that here.
-- **Next step**: remind the user to run `/html-cv` on the seed to render the final CV
+- **Next step**: remind the user to render the seed with `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard|modern>` (available themes: `harvard`, `modern`)

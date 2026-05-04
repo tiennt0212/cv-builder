@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+/**
+ * render-cv — Deterministic CV renderer.
+ *
+ * Reads a draft-cv.yaml seed and writes
+ *   <seed-dir>/html-cv/cv(<theme>).html
+ * using themes/<theme>/template.hbs and themes/<theme>/style.css.
+ *
+ * Usage:
+ *   ./bin/render-cv <path-to-draft-cv.yaml> --theme harvard
+ *   ./bin/render-cv <path-to-draft-cv.yaml> --theme modern
+ *
+ * First-time setup: cd bin && npm install
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const common = require('./lib/render-common');
+const { Handlebars, yaml, mdHelper } = common.requireDeps();
+
+const REPO_ROOT = path.resolve(__dirname, '..');
+const VALID_THEMES = ['harvard', 'modern'];
+
+const { yamlPath, theme } = common.parseArgs(process.argv, {
+  scriptName: 'render-cv',
+  defaultTheme: 'harvard',
+  validThemes: VALID_THEMES,
+});
+
+// Load seed
+const data = common.loadYaml(yamlPath, yaml);
+
+// Load template
+const templatePath = path.join(REPO_ROOT, 'themes', theme, 'template.hbs');
+const templateSrc = common.loadTemplate(templatePath);
+
+// Register helpers
+common.registerHelpers(Handlebars, mdHelper);
+const template = Handlebars.compile(templateSrc, { noEscape: false });
+
+// Compute output path
+const seedDir = path.dirname(yamlPath);
+const outputPath = path.join(seedDir, 'html-cv', `cv(${theme}).html`);
+
+// Compute relative CSS path from output file to themes/<theme>/style.css
+const cssPath = path.join(REPO_ROOT, 'themes', theme, 'style.css');
+const stylePath = common.computeRelativePath(outputPath, cssPath);
+
+// Render and write
+const html = template({ ...data, _stylePath: stylePath, _theme: theme });
+common.writeOutput(outputPath, html);
+
+console.log(`Wrote ${outputPath}`);
