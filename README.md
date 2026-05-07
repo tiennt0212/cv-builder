@@ -24,9 +24,9 @@ flowchart LR
         dc["Analyse JD\nScore projects\nDetect archetype"]
     end
 
-    subgraph renderers ["Renderers"]
+    subgraph renderers ["Renderers (CLI, no AI)"]
         direction TB
-        html["/html-cv → PDF"]
+        html["./bin/render-cv → HTML → PDF"]
     end
 
     JD --> draft
@@ -36,15 +36,16 @@ flowchart LR
 
 - `personal-data/` — raw facts about your career. Format-agnostic. Never tailored to any specific job.
 - `/draft-cv` — analyses the JD, scores projects, detects archetype, and produces a seed YAML with actual CV prose.
-- Renderer (`/html-cv`) — takes the seed and applies format-specific layout. Zero content decisions.
+- Renderer (`./bin/render-cv`) — deterministic Node.js + Handlebars CLI; takes the seed and applies a theme. Zero content decisions, zero AI involvement.
 
 ## Setup
 
 **Requirements:** Any AI agent listed on [agentskills.io/clients](https://agentskills.io/clients).
 
 1. Clone this repo
-2. Run `/personal-log` to set up your profile and add your employers and projects (or say "I have an old CV" to import in bulk)
-3. Run `/setup-archetypes` to define your target role profiles (required for archetype-aware tailoring)
+2. `cd bin && npm install` — installs `handlebars`, `js-yaml`, and `puppeteer` (used by the renderers and the optional PDF export)
+3. Run `/personal-log` to set up your profile and add your employers and projects (or say "I have an old CV" to import in bulk)
+4. Run `/setup-archetypes` to define your target role profiles (required for archetype-aware tailoring)
 
 > **Sample data:** Check out the [`examples`](../../tree/examples) branch to see populated company and project files you can use as reference or test with.
 > **Privacy:** If you push your personal data, keep your fork private.
@@ -69,9 +70,16 @@ Skills follow the [Agent Skills open standard](https://agentskills.io/specificat
 | `/personal-log` | Add or update career data — projects, companies, certifications, skills, etc. |
 | `/setup-archetypes` | Define your target role archetypes in `agents-ref/archetypes.yaml`. Run once; re-run when target roles change. |
 | `/draft-cv [JD]` | Analyse a JD, score projects, detect archetype, produce `analysis.md` + `draft-cv.yaml` |
-| `/html-cv [seed]` | Render seed to browser-previewable HTML — preview in browser; export PDF via browser print or `./html-to-pdf` for clickable links |
 | `/draft-letter` | Draft a tailored cover letter from a prior `/draft-cv` run — produces `draft-letter.yaml` |
-| `/html-letter [seed]` | Render `draft-letter.yaml` into a browser-previewable HTML cover letter |
+
+Rendering is a deterministic CLI step (no AI involvement):
+
+| CLI | What it does |
+|-----|-------------|
+| `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard\|modern>` | Render seed to browser-previewable HTML. Preview in browser; export PDF via browser print or `./html-to-pdf` for clickable links. |
+| `./bin/render-letter <path/to/draft-letter.yaml> --theme modern` | Render `draft-letter.yaml` into a browser-previewable HTML cover letter. |
+
+Themes live in `themes/<name>/`. Adding a new CV theme means adding `template.hbs` + `style.css`; a new letter theme means `letter.hbs` + `letter.css`. No script edits required. See [CONTRIBUTING.md](CONTRIBUTING.md#adding-a-new-theme).
 
 ## Data architecture
 
@@ -95,7 +103,7 @@ jobs/tnt_lab-frontend_engineer/
   2026-04-07_14-30/                ← run folder (one per /draft-cv run)
     analysis.md                    ← decision log
     draft-cv.yaml                  ← seed
-    html-cv/cv(harvard).html       ← added by /html-cv
+    html-cv/cv(harvard).html       ← added by ./bin/render-cv ... --theme harvard
 ```
 
 ## Going deeper

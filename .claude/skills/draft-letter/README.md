@@ -16,7 +16,7 @@ Generic cover letters fail because they describe skills, not people. The most co
 - Anti-AI prose pattern enforcement throughout (banned phrases, banned openers, banned closers)
 - Revision requests: tone adjustment, story swap, gap acknowledgement, Golden Ratio fixes, shorter/longer
 
-**Does not handle:** Rendering — use `/html-letter`
+**Does not handle:** Rendering — use `./bin/render-letter [seed.yaml] --theme modern` (deterministic CLI; no AI involvement).
 
 **Requires:** Prior `/draft-cv` run for the same application — reads `analysis.md` for JD profile and project context
 
@@ -42,4 +42,4 @@ Generic cover letters fail because they describe skills, not people. The most co
 
 **Before:** `/draft-cv` (required — provides JD context and project data)
 
-**After:** `/html-letter` (renders `draft-letter.yaml` to browser-previewable HTML)
+**After:** `./bin/render-letter [path-to-draft-letter.yaml] --theme modern` (renders `draft-letter.yaml` to browser-previewable HTML)

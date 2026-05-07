@@ -28,10 +28,10 @@ flowchart TD
     letter -->|Yes| draftletter["/draft-letter"]
     letter -->|No| renderer
 
-    draftletter --> htmlletter["/html-letter\nHTML cover letter"]
+    draftletter --> htmlletter["./bin/render-letter\nHTML cover letter"]
     draftletter --> renderer{Pick renderer}
 
-    renderer --> html["/html-cv\nHTML preview + PDF export"]
+    renderer --> html["./bin/render-cv\nHTML preview + PDF export"]
 
     html --> done([PDF ready])
 ```
@@ -62,8 +62,8 @@ The core loop you'll run for every application.
 1. Run `/draft-cv` and paste the JD (or the file path)
 2. Review `analysis.md` — check which projects were selected and why, and whether any gaps were flagged
 3. If the match tier is LOW and the gaps are real, consider whether this role is worth pursuing
-4. Run a renderer to get a PDF: `/html-cv` is the fastest — open in browser to preview, then either `File > Print` or `./html-to-pdf <file>` for a PDF with clickable links
-5. If the role needs a cover letter: run `/draft-letter` before the renderer
+4. Render the seed: `./bin/render-cv <run-folder>/draft-cv.yaml --theme harvard` (or `--theme modern`). Open the resulting HTML in a browser to preview, then either `File > Print` or `./html-to-pdf <file>` for a PDF with clickable links
+5. If the role needs a cover letter: run `/draft-letter`, then `./bin/render-letter <run-folder>/draft-letter/draft-letter.yaml --theme modern`
 
 ---
 
@@ -99,7 +99,7 @@ Run these once when you first clone the repo. You won't need them again unless y
 |------|---------|--------------|
 | 1 | `/personal-log` | Set up your profile and add employers + projects — or say "I have an old CV" to import in bulk |
 | 2 | `/setup-archetypes` | Define your target role profiles — required for archetype-aware tailoring |
-| 3 *(optional)* | `cd bin && npm install` | Install Puppeteer for `./html-to-pdf` — only needed if you want PDFs with clickable links |
+| 3 | `cd bin && npm install` | Install `handlebars`, `js-yaml`, and `puppeteer`. Required by `./bin/render-cv`, `./bin/render-letter`, and the optional `./html-to-pdf` step. |
 
 ---
 
@@ -109,16 +109,18 @@ Run these once when you first clone the repo. You won't need them again unless y
 |------|---------|--------------|
 | 1 | `/draft-cv [JD]` | Paste the JD — analyses it, scores projects, produces `analysis.md` + `draft-cv.yaml` |
 | 2 | `/draft-letter` *(optional)* | Drafts a cover letter from the same analysis |
-| 3 | Run the renderer | `/html-cv` — see below |
+| 3 | Run the renderer | `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard\|modern>` — see below |
 
 ---
 
 ## Choosing a renderer
 
+Both renderers are deterministic Node CLIs — no AI involvement. Output is byte-identical for the same input + theme.
+
 | Command | Best for | Requirement |
 |---------|----------|-------------|
-| `/html-cv` | Browser preview + PDF export. `./html-to-pdf` produces PDF with clickable links | `npm install` in `bin/` (once) for `./html-to-pdf`; browser print needs nothing |
-| `/html-letter` | Cover letter HTML preview + PDF export (use after `/draft-letter`) | None |
+| `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard\|modern>` | Browser preview + PDF export. `./html-to-pdf` produces PDF with clickable links | `cd bin && npm install` once |
+| `./bin/render-letter <path/to/draft-letter.yaml> --theme modern` | Cover letter HTML preview + PDF export (use after `/draft-letter`) | `cd bin && npm install` once |
 
 ---
 
@@ -126,7 +128,7 @@ Run these once when you first clone the repo. You won't need them again unless y
 
 **Every application:**
 - `/draft-cv` — always; paste the JD directly
-- `/html-cv` — render the seed to HTML for browser preview and PDF export
+- `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard|modern>` — render the seed to HTML for browser preview and PDF export
 
 **Occasionally:**
 - `/personal-log` — after finishing a project, changing jobs, or earning a certification

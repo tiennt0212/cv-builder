@@ -65,12 +65,17 @@ Check the company file in `personal-data/companies/[slug].md`. The `working_time
 
 ## Renderers
 
-**I ran `/html-cv` but there's no Core Competencies section.**
+**I ran `./bin/render-cv` but there's no Core Competencies section.**
 
 The `competencies` field was not populated in the seed — either because the JD had too few extractable keywords to support 4+ genuine phrases, or the seed was generated before the competencies feature was added. Re-run `/draft-cv` to get a fresh seed with competencies.
 
 **Which renderer should I use?**
 
-- `/html-cv` — produces a self-contained HTML file. Preview immediately in any browser. Two PDF export options:
+- `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard|modern>` — deterministic Node.js + Handlebars CLI. Produces a self-contained HTML file. Preview immediately in any browser. Two PDF export options:
   - **Browser print** (`File > Print → Save as PDF`) — zero setup. Links in the PDF will not be clickable.
-  - **`./html-to-pdf <file>`** — runs Puppeteer locally, produces a PDF where links are clickable. One-time setup: `npm install` in `bin/`. Recommended for final submissions sent to recruiters.
+  - **`./html-to-pdf <file>`** — runs Puppeteer locally, produces a PDF where links are clickable. One-time setup: `cd bin && npm install`. Recommended for final submissions sent to recruiters.
+- `./bin/render-letter <path/to/draft-letter.yaml> --theme modern` — same shape, used after `/draft-letter` to render the cover letter.
+
+**Why isn't there a `/html-cv` slash command anymore?**
+
+Rendering used to be an AI-driven skill (`/html-cv`, `/html-letter`). Issue #8 retired both in favour of deterministic CLIs because every render-time decision (HTML structure, optional-field omission, bold conversion) is mechanical — running it through an LLM cost tokens and added unpredictability for no benefit. The seed YAML schema is unchanged, so old seeds still render.

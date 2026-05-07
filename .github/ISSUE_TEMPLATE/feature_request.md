@@ -15,7 +15,8 @@ assignees: ''
 - [ ] `/personal-log` — data ingestion and CV import
 - [ ] `/setup-archetypes` — archetype configuration
 - [ ] `/draft-cv` — JD analysis and seed generation
-- [ ] `/html-cv` — HTML renderer
+- [ ] `./bin/render-cv` / `./bin/render-letter` — HTML renderer CLIs
+- [ ] `themes/` — visual theme assets
 - [ ] `agents-ref/schema.md` — schema / taxonomy
 - [ ] Documentation
 - [ ] Other: ___

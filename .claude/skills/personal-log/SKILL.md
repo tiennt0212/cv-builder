@@ -10,7 +10,7 @@ description: >
   publication, skill, or any career update. Also trigger when they say "/personal-log",
   "add to my data", "import my CV", "I have an old CV", "extract from my resume",
   or provide a file path / paste a large block of CV-formatted text.
-  Do NOT trigger for CV generation (use /draft-cv) or rendering (use /html-cv).
+  Do NOT trigger for CV generation (use /draft-cv) or rendering (use ./bin/render-cv).
 ---
 
 # Personal Log — Career Data Manager

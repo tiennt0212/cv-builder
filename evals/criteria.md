@@ -105,20 +105,37 @@ Reference document for evaluating output quality of cv-builder skills. Use this 
 
 ---
 
-## Renderer (`/html-cv`) — Evaluation Criteria
+## Renderer (`./bin/render-cv`, `./bin/render-letter`) — Evaluation Criteria
 
-The renderer makes **zero content decisions** — it only applies format-specific styling to a seed YAML. Criteria here are format-only.
+Rendering is now a deterministic Node.js + Handlebars CLI. There is **no AI involvement at render time** — every render-time decision (HTML structure, optional-field omission, bold conversion, entity escaping) is mechanical, so criteria here are pass/fail and machine-checkable.
+
+### Process (pass/fail)
+- [ ] Script exits 0 with no `stderr`
+- [ ] Output file exists at the expected path: `<seed-dir>/html-cv/cv(<theme>).html` (CV) or `<seed-dir>/html-letter/letter(<theme>).html` (letter)
+- [ ] When invoked without `cd bin && npm install`, script exits 2 with the friendly "Run: cd bin && npm install" message — not a stack trace
 
 ### Schema Fidelity (pass/fail)
-- [ ] All sections present in seed YAML are rendered in output
-- [ ] Optional fields (awards, publications, certifications) are omitted entirely when absent — not rendered as empty sections
-- [ ] Date format uses en-dash (2022–2024), not hyphen
+- [ ] Every section present in the seed appears in the rendered HTML
+- [ ] Missing optional fields produce no empty elements — no empty `<div>`, `<span>`, `<li>`, or `<a>` tags appear in the output for fields the seed omits
+- [ ] `competencies` section is omitted entirely when absent from the seed
+- [ ] GitHub contact item is omitted when `contact.github` is absent
+- [ ] `project-dates` span is omitted when a project has no `dates`
 
-### `/html-cv` checks (pass/fail)
-- [ ] Opens correctly in browser with no build step
-- [ ] Print → Save as PDF produces clean single-column output
-- [ ] `**bold**` in seed rendered as `<strong>`, not literal asterisks
-- [ ] HTML entities escaped (`&`, `<`, `>`)
+### Markup quality (pass/fail)
+- [ ] `**bold**` markers in seed prose render as `<strong>...</strong>`, not literal asterisks
+- [ ] HTML entities (`&`, `<`, `>`) in seed strings are escaped (`&amp;`, `&lt;`, `&gt;`) before any markup conversion — no XSS, no broken markup
+- [ ] Date ranges use the en-dash `–` (U+2013), not hyphen-minus `-`
+- [ ] No `<style>` blocks or `style=` attributes — all styling comes from the linked theme stylesheet
+
+### CSS link integrity (pass/fail)
+- [ ] `<link rel="stylesheet" href="...">` resolves: the file exists at the relative path the renderer wrote
+- [ ] CSS path uses forward slashes (portable across platforms)
+- [ ] HTML opens standalone in a browser without 404s on the stylesheet
+
+### Theme parity (pass/fail)
+- [ ] Both `harvard` and `modern` CV themes render the same seed without errors
+- [ ] `modern` letter theme renders a `draft-letter.yaml` seed without errors
+- [ ] Adding a new theme (drop `template.hbs` + `style.css` into `themes/<name>/` and add to `VALID_THEMES`) requires no edits to existing theme files
 
 ---
 
@@ -164,4 +181,6 @@ Run the renderer against the seed YAML produced by the `/draft-cv` test above.
 
 | Command | Input | Check |
 |---------|-------|-------|
-| `/html-cv` | `draft-cv.yaml` | Opens in browser, prints cleanly |
+| `./bin/render-cv <path/to/draft-cv.yaml> --theme harvard` | `draft-cv.yaml` | Exits 0; HTML opens in browser; CSS link resolves; prints cleanly |
+| `./bin/render-cv <path/to/draft-cv.yaml> --theme modern` | `draft-cv.yaml` | Same checks for modern theme |
+| `./bin/render-letter <path/to/draft-letter.yaml> --theme modern` | `draft-letter.yaml` | Same checks for the cover letter |

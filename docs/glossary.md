@@ -16,7 +16,29 @@ A profile describing the *kind of engineer* a JD is hiring — not the tech stac
 
 The intermediate file (`draft-cv.yaml`) that `/draft-cv` produces. It contains all CV content as structured data — contact info, summary, experience entries with bullets, skills, education — but no formatting decisions.
 
-The renderer command (`/html-cv`) reads the seed and applies format-specific layout. The seed is the single source of truth for content; the renderer makes zero content decisions.
+The renderer CLI (`./bin/render-cv`) reads the seed and applies format-specific layout. The seed is the single source of truth for content; the renderer makes zero content decisions and involves no AI.
+
+---
+
+## Theme
+
+A pair of files under `themes/<name>/` that defines the visual presentation of a rendered CV or letter:
+
+- **CV theme:** `template.hbs` (Handlebars template) + `style.css`
+- **Letter theme:** `letter.hbs` + `letter.css`
+
+The renderer CLI loads the templated `.hbs`, fills it with seed data, and links the matching CSS by relative path. Adding a new theme requires only those two files — no script edits.
+
+---
+
+## Renderer CLI
+
+The deterministic Node.js + Handlebars scripts that turn a seed YAML into HTML:
+
+- `./bin/render-cv <path/to/draft-cv.yaml> --theme <harvard|modern>` → `<seed-dir>/html-cv/cv(<theme>).html`
+- `./bin/render-letter <path/to/draft-letter.yaml> --theme modern` → `<seed-dir>/html-letter/letter(<theme>).html`
+
+These replace the retired `html-cv` and `html-letter` AI skills (issue #8). Rendering is now mechanical: same input + same theme → byte-identical output.
 
 ---
 
@@ -40,7 +62,7 @@ jobs/company-role/
     analysis.md
     draft-cv.yaml
     html-cv/
-      cv(harvard).html
+      cv(harvard).html        ← added by ./bin/render-cv ... --theme harvard
 ```
 
 Re-running `/draft-cv` creates a new run folder; old runs are preserved untouched. This lets you compare outputs across runs or after updating your dataset.

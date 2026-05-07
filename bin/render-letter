@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+/**
+ * render-letter — Deterministic cover-letter renderer.
+ *
+ * Reads a draft-letter.yaml seed and writes
+ *   <seed-dir>/html-letter/letter(<theme>).html
+ * using themes/<theme>/letter.hbs and themes/<theme>/letter.css.
+ *
+ * Usage:
+ *   ./bin/render-letter <path-to-draft-letter.yaml> --theme modern
+ *
+ * First-time setup: cd bin && npm install
+ */
+
+const path = require('path');
+
+const common = require('./lib/render-common');
+const { Handlebars, yaml, mdHelper } = common.requireDeps();
+
+const REPO_ROOT = path.resolve(__dirname, '..');
+const VALID_THEMES = ['modern'];
+
+const { yamlPath, theme } = common.parseArgs(process.argv, {
+  scriptName: 'render-letter',
+  defaultTheme: 'modern',
+  validThemes: VALID_THEMES,
+});
+
+// Load seed
+const data = common.loadYaml(yamlPath, yaml);
+
+// Load template
+const templatePath = path.join(REPO_ROOT, 'themes', theme, 'letter.hbs');
+const templateSrc = common.loadTemplate(templatePath);
+
+// Register helpers
+common.registerHelpers(Handlebars, mdHelper);
+const template = Handlebars.compile(templateSrc, { noEscape: false });
+
+// Compute output path
+const seedDir = path.dirname(yamlPath);
+const outputPath = path.join(seedDir, 'html-letter', `letter(${theme}).html`);
+
+// Compute relative CSS path from output file to themes/<theme>/letter.css
+const cssPath = path.join(REPO_ROOT, 'themes', theme, 'letter.css');
+const stylePath = common.computeRelativePath(outputPath, cssPath);
+
+// Render and write
+const html = template({ ...data, _stylePath: stylePath, _theme: theme });
+common.writeOutput(outputPath, html);
+
+console.log(`Wrote ${outputPath}`);
