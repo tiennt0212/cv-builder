@@ -1,8 +1,10 @@
 {
-  "name": "html-to-pdf",
+  "name": "cv-builder-bin",
   "version": "1.0.0",
-  "description": "Export HTML CV/letter to PDF with clickable links via Puppeteer",
+  "description": "CLI scripts for rendering CV/letter HTML from YAML and exporting to PDF",
   "dependencies": {
+    "handlebars": "^4.7.9",
+    "js-yaml": "^4.1.1",
     "puppeteer": "^22.0.0"
   }
 }

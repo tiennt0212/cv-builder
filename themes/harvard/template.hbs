@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CV — {{contact.name}}</title>
+
+  <!-- Font: EB Garamond (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="{{_stylePath}}">
+</head>
+<body>
+<div class="page">
+
+  <div class="cv-header">
+    <div class="cv-name">{{contact.name}}</div>
+    <div class="cv-contact">
+      {{#if contact.location}}<span>{{contact.location}}</span>{{/if}}
+      {{#if contact.email}}<span><a href="mailto:{{contact.email}}">{{contact.email}}</a></span>{{/if}}
+      {{#if contact.phone}}<span>{{contact.phone}}</span>{{/if}}
+      {{#if contact.linkedin}}<span><a href="https://linkedin.com/in/{{contact.linkedin}}">LinkedIn: {{contact.linkedin}}</a></span>{{/if}}
+      {{#if contact.github}}<span><a href="https://github.com/{{contact.github}}">GitHub: {{contact.github}}</a></span>{{/if}}
+    </div>
+  </div>
+
+  {{#if summary}}
+  <hr class="section-rule">
+  <div class="section-heading">SUMMARY</div>
+  <div class="summary">{{md summary}}</div>
+  {{/if}}
+
+  {{#if competencies}}
+  <hr class="section-rule">
+  <div class="section-heading">CORE COMPETENCIES</div>
+  <div class="competencies">
+    {{#each competencies}}
+    <span class="competency-tag">{{md this}}</span>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if experience}}
+  <hr class="section-rule">
+  <div class="section-heading">EXPERIENCE</div>
+  {{#each experience}}
+  <div class="job-entry">
+    {{#if location}}
+    <div class="job-header">
+      <span class="job-company">{{md company}}</span>
+      <span class="job-location">{{location}}</span>
+    </div>
+    {{else}}
+    <div class="job-company">{{md company}}</div>
+    {{/if}}
+
+    {{#each roles}}
+    <div class="job-title-row">
+      <span class="job-title">{{md title}}</span>
+      <span class="job-dates">{{#if dates}}{{dates}}{{else}}{{../dates}}{{/if}}</span>
+    </div>
+    {{/each}}
+
+    {{#each projects}}
+      {{#if title}}
+      <div class="project-header">
+        <span class="project-title">{{md title}}</span>
+        {{#if dates}}<span class="project-dates">{{dates}}</span>{{/if}}
+      </div>
+      {{/if}}
+      {{#if bullets}}
+      <ul class="bullets">
+        {{#each bullets}}
+        <li>{{md this}}</li>
+        {{/each}}
+      </ul>
+      {{/if}}
+    {{/each}}
+  </div>
+  {{/each}}
+  {{/if}}
+
+  {{#if skills}}
+  <hr class="section-rule">
+  <div class="section-heading">SKILLS</div>
+  {{#each skills}}
+  <div class="skills-row"><span class="skills-category">{{md category}}:</span> {{#each items}}{{md this}}{{#unless @last}}, {{/unless}}{{/each}}</div>
+  {{/each}}
+  {{/if}}
+
+  {{#if sections}}
+  {{#each sections}}
+  <hr class="section-rule">
+  <div class="section-heading">{{heading}}</div>
+  {{#each entries}}
+    {{#if (eq kind "education")}}
+    <div class="bottom-entry">
+      <div class="bottom-row">
+        <span class="bottom-degree">{{md degree}}</span>
+        {{#if gpa}}<span class="bottom-right">{{gpa}}</span>{{/if}}
+      </div>
+      <div class="bottom-row">
+        <span>{{md institution}}</span>
+        {{#if dates}}<span class="bottom-right">{{dates}}</span>{{/if}}
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if (eq kind "certification")}}
+    <div class="bottom-entry">
+      <div class="bottom-row">
+        <span class="bottom-title">{{#if url}}<a href="{{url}}">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
+        {{#if date}}<span class="bottom-right">{{date}}</span>{{/if}}
+      </div>
+      {{#if issuer}}<div class="bottom-row"><span>{{md issuer}}</span></div>{{/if}}
+      {{#if description}}<div class="bottom-row"><span class="entry-description">{{md description}}</span></div>{{/if}}
+    </div>
+    {{/if}}
+
+    {{#if (eq kind "award")}}
+    <div class="bottom-entry">
+      <div class="bottom-row">
+        <span class="bottom-title">{{#if url}}<a href="{{url}}">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
+        {{#if date}}<span class="bottom-right">{{date}}</span>{{/if}}
+      </div>
+      {{#if issuer}}<div class="bottom-row"><span>{{md issuer}}</span></div>{{/if}}
+      {{#if description}}<div class="bottom-row"><span class="entry-description">{{md description}}</span></div>{{/if}}
+    </div>
+    {{/if}}
+
+    {{#if (eq kind "publication")}}
+    <div class="bottom-entry">
+      <div class="bottom-row">
+        <span class="bottom-title">{{#if url}}<a href="{{url}}">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
+        {{#if date}}<span class="bottom-right">{{date}}</span>{{/if}}
+      </div>
+      {{#if venue}}<div class="bottom-row"><span>{{md venue}}</span></div>{{/if}}
+      {{#if description}}<div class="bottom-row"><span class="entry-description">{{md description}}</span></div>{{/if}}
+    </div>
+    {{/if}}
+
+    {{#if (eq kind "language")}}
+    <div class="bottom-entry">
+      <div class="bottom-row">
+        <span class="bottom-title">{{md language}}</span>
+        {{#if proficiency}}<span class="bottom-right">{{proficiency}}</span>{{/if}}
+      </div>
+    </div>
+    {{/if}}
+  {{/each}}
+  {{/each}}
+  {{/if}}
+
+</div>
+</body>
+</html>

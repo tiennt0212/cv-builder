@@ -17,7 +17,7 @@ The system's "brain". Separates *what to show* (content) from *how to show it* (
 - Full prose generation: summary, experience bullets, skills, core competencies
 - Seniority strategy and keyword coverage reporting in `analysis.md`
 
-**Does not handle:** Rendering — delegated to `/html-cv`
+**Does not handle:** Rendering — delegated to the deterministic CLI `./bin/render-cv` (no AI involvement).
 
 ## Capabilities
 
@@ -43,4 +43,4 @@ jobs/[company-role]/[YYYY-MM-DD_HH-MM]/
 
 **Before:** `/personal-log` (populate dataset), `/setup-archetypes` (configure archetypes — required for archetype-aware tailoring)
 
-**After:** `/html-cv` (renderer) or `/draft-letter` for a cover letter
+**After:** `./bin/render-cv [seed.yaml] --theme [harvard|modern]` (renderer) or `/draft-letter` for a cover letter

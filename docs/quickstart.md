@@ -26,10 +26,11 @@ Re-run this only when your target role family changes (e.g. frontend → AI/ML).
 
 1. Run `/draft-cv` and paste the job description
 2. Review `analysis.md` — check which projects were selected and why
-3. Run `/html-cv` to generate a browser-previewable HTML file
-4. Open the file in your browser → `File > Print` → save as PDF
+3. First-time only: `cd bin && npm install` (installs the renderer's dependencies)
+4. Run `./bin/render-cv <run-folder>/draft-cv.yaml --theme harvard` (or `--theme modern`) to generate a browser-previewable HTML file
+5. Open the file in your browser → `File > Print` → save as PDF
 
-Need a cover letter? Run `/draft-letter` between steps 2 and 3, then `/html-letter` for an HTML version.
+Need a cover letter? Run `/draft-letter` between steps 2 and 3, then `./bin/render-letter <run-folder>/draft-letter/draft-letter.yaml --theme modern` for an HTML version.
 
 ---
 

@@ -6,14 +6,14 @@ description: >
   draft-cv.yaml from the same application folder.
   Trigger when the user says "/draft-letter", "draft a cover letter",
   "write a cover letter", "generate cover letter", or "cover letter for [company]".
-  Do NOT trigger for rendering — use /html-letter for that.
+  Do NOT trigger for rendering — use the deterministic CLI `./bin/render-letter` for that.
 ---
 
 # Draft Letter
 
 Draft a tailored, first-person cover letter from the candidate's data and a
 short motivation capture. Outputs a structured `draft-letter.yaml` seed file
-that can be rendered by `/html-letter`. Requires `/draft-cv` to have been run first.
+that can be rendered by `./bin/render-letter`. Requires `/draft-cv` to have been run first.
 
 ## Arguments
 $ARGUMENTS — path to a `draft-cv.yaml` seed file, OR a company+role slug
@@ -396,7 +396,7 @@ After saving, output:
 - Word count
 - Which proof points were used and which JD requirements they map to (1 line each)
 - Any gaps addressed in the letter
-- `Run /html-letter [path/to/draft-letter.yaml] to render as HTML`
+- `Run ./bin/render-letter <path/to/draft-letter.yaml> --theme modern to render as HTML`
 
 ---
 
