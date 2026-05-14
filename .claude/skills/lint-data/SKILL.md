@@ -8,6 +8,15 @@ description: >
   Trigger when the user says "/lint-data", "check my data", "validate my projects",
   "audit personal-data", or "are there any issues with my data files".
   Do NOT trigger for generating or rendering CVs — use /draft-cv and renderer commands for those.
+license: AGPL-3.0
+compatibility: >
+  Compatible with any Agent Skills-aware runtime that supports file-based skill activation.
+  Does not write or modify files.
+metadata:
+  author: tiennt0212
+  version: 1.0.1
+  introduced_in: v1.0.0
+allowed-tools: Read Bash(find:*) Bash(grep:*)
 ---
 
 # Lint Data — personal-data/ Validator

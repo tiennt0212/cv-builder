@@ -8,6 +8,15 @@ description: >
   Trigger when the user provides a JD and asks to create or draft a CV,
   or says "draft my CV", "tailor my CV for this role", "apply for this job".
   Do NOT trigger for rendering — rendering is handled by the deterministic CLI `./bin/render-cv`.
+license: AGPL-3.0
+compatibility: >
+  Compatible with any Agent Skills-aware runtime that supports file-based skill activation
+  and write access to the working directory.
+metadata:
+  author: tiennt0212
+  version: 1.3.1
+  introduced_in: v1.0.0
+allowed-tools: Read Write Bash(find:*) Bash(ls:*) Bash(grep:*)
 ---
 
 # Draft Tailored CV

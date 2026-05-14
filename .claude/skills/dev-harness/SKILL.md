@@ -12,6 +12,16 @@ description: >
   Without flag: pauses after each phase for human review.
   Do NOT trigger for one-off skill edits — use /skill-creator for those.
   Do NOT trigger for user data issues — use /lint-data or /lint-toolkit for those.
+license: AGPL-3.0
+compatibility: >
+  Requires Claude Code with sub-agent spawning (Agent tool) support.
+  Not compatible with runtimes that do not support spawning isolated sub-agents or
+  file-based shared state between agent phases.
+metadata:
+  author: tiennt0212
+  version: 1.2.1
+  introduced_in: v2.0.0
+allowed-tools: Read Write Edit Bash Agent
 ---
 
 # dev-harness — Autonomous Skill Development Harness

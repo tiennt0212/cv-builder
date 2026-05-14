@@ -7,6 +7,15 @@ description: >
   Trigger when the user says "/draft-letter", "draft a cover letter",
   "write a cover letter", "generate cover letter", or "cover letter for [company]".
   Do NOT trigger for rendering — use the deterministic CLI `./bin/render-letter` for that.
+license: AGPL-3.0
+compatibility: >
+  Compatible with any Agent Skills-aware runtime that supports file-based skill activation
+  and write access to the working directory.
+metadata:
+  author: tiennt0212
+  version: 1.1.1
+  introduced_in: v1.0.0
+allowed-tools: Read Write Bash(find:*)
 ---
 
 # Draft Letter

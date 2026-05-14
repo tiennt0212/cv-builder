@@ -54,6 +54,8 @@ canary ──► master ──► tag ──► gh release
 
    After this step, `master` must reflect exactly the code being released — the release commit lives here, not on `canary`.
 
+   When merging a PR that modifies a skill file, bump `metadata.version` in that skill's frontmatter as part of the merge commit.
+
 2. **Rebase long-lived branches onto `master`**
 
    Branches like `examples` carry their own commits (e.g. example data) that are never merged into `master`. After each release, rebase them so their custom commits sit on top of the latest `master`:
@@ -137,3 +139,5 @@ The following must remain local on the `personal` branch:
 | Bug fix, docs, refactor | Patch `0.0.x` |
 
 Pre-release qualifiers: `v1.1.0-beta.1`, `v1.1.0-rc.1`.
+
+Skill files carry their own `metadata.version` that follows the same rules, tracking the skill's change history independently of the toolkit version. The `metadata.introduced_in` field records the first toolkit release tag that shipped the skill — set it once at introduction and never change it.

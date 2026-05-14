@@ -7,6 +7,15 @@ description: >
   Trigger when the user says "/setup-archetypes", "set up archetypes",
   "define my archetypes", or "update my target roles".
   Do NOT trigger for per-application CV tailoring — use /draft-cv for that.
+license: AGPL-3.0
+compatibility: >
+  Compatible with any Agent Skills-aware runtime that supports file-based skill activation
+  and write access to the working directory.
+metadata:
+  author: tiennt0212
+  version: 1.0.1
+  introduced_in: v1.0.0
+allowed-tools: Read Write Edit
 ---
 
 # Setup Archetypes
