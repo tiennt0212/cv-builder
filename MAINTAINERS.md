@@ -22,6 +22,18 @@ These are created off `canary` and deleted after merging.
 | `feat/[name]` | New features |
 | `fix/[name]` | Bug fixes |
 | `docs/[name]` | Documentation-only changes |
+| `chore/[name]` | Maintenance tasks (deps, config, tooling) |
+| `refactor/[name]` | Code restructuring without behaviour change |
+| `test/[name]` | Test additions or fixes only |
+| `ci/[name]` | CI/CD workflow changes |
+
+**Issue-linked branch naming:** use `<type>/issue-N-short-description` — no `#` in branch names (breaks some tooling).
+
+- `feat/issue-8-deterministic-renderers` ✅
+- `chore/issue-21-skill-frontmatter` ✅
+- `chore/#21-skill-frontmatter-fields` ❌
+
+Rules: lowercase, hyphen-separated, no special characters (`#`, `@`, spaces).
 
 ### Exploratory and archive branches
 
@@ -29,6 +41,39 @@ These are created off `canary` and deleted after merging.
 |--------|---------|
 | `dev/[name]` | Experimental work — proof of concept, spikes. May never merge. |
 | `archive/[name]` | Frozen historical snapshots. Never merge back. |
+
+---
+
+## Commit message convention
+
+Format:
+
+```
+<type>[!]: <short description> [(#N)]
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types:** `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `style`, `perf`
+
+**Rules:**
+- Subject line: lowercase, no trailing period, ≤ 72 characters
+- Issue reference: `(#N)` at the end of the subject line — no `issue` word
+- Breaking change: append `!` to the type (`feat!:`) or add `BREAKING CHANGE:` in the footer
+
+**Examples:**
+
+```
+feat: add pdf export option (#42)
+fix!: remove deprecated render-cv flags (#38)
+docs: clarify personal branch workflow (#15)
+chore: upgrade handlebars to v4.7.8 (#29)
+refactor: extract date formatting into helper (#33)
+```
+
+PR titles follow the same format — they become the merge commit subject.
 
 ---
 

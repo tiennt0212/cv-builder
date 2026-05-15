@@ -19,12 +19,57 @@ Thank you for your interest in contributing! This is a prompt-engineering and AI
 ## Workflow
 
 1. Fork the repo
-2. Create a branch off `canary`: `git checkout -b feat/your-feature-name`
+2. Create a branch off `canary`: `git checkout -b feat/issue-N-short-description`
 3. Make your changes
 4. Open a Pull Request against the `canary` branch (not `master`)
 5. Describe what you changed and why in the PR description
 
 For the full branching model and how maintainers cut releases from `canary` → `master`, see [MAINTAINERS.md](MAINTAINERS.md).
+
+## Commit messages
+
+Format:
+
+```
+<type>[!]: <short description> [(#N)]
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types:**
+
+| Type | When to use |
+|------|-------------|
+| `feat` | New feature or capability |
+| `fix` | Bug fix |
+| `docs` | Documentation only |
+| `chore` | Maintenance (deps, config, tooling) |
+| `refactor` | Restructuring without behaviour change |
+| `test` | Test additions or fixes only |
+| `ci` | CI/CD workflow changes |
+| `style` | Formatting, whitespace — no logic change |
+| `perf` | Performance improvement |
+
+**Rules:**
+- Subject line: lowercase, no trailing period, ≤ 72 characters
+- Issue reference: `(#N)` at the end of the subject line — no `issue` word
+- Breaking change: append `!` to the type (`feat!:`) or add `BREAKING CHANGE:` in the footer
+
+**Examples:**
+
+```
+feat: add pdf export option (#42)
+fix!: remove deprecated render-cv flags (#38)
+docs: clarify personal branch workflow (#15)
+chore: upgrade handlebars to v4.7.8 (#29)
+refactor: extract date formatting into helper (#33)
+```
+
+## PR titles
+
+PR titles follow the same `<type>[!]: <short description> [(#N)]` format — they become the merge commit subject on `canary`.
 
 ## Naming conventions
 
