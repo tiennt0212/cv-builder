@@ -19,7 +19,7 @@ Thank you for your interest in contributing! This is a prompt-engineering and AI
 ## Workflow
 
 1. Fork the repo
-2. Create a branch off `canary`: `git checkout -b feat/issue-N-short-description`
+2. Create a branch off `canary`: `git checkout -b 'feat/#N-short-description'` (quotes needed — `#` is a shell comment character)
 3. Make your changes
 4. Open a Pull Request against the `canary` branch (not `master`)
 5. Describe what you changed and why in the PR description
@@ -63,8 +63,8 @@ Format:
 feat: add pdf export option (#42)
 fix!: remove deprecated render-cv flags (#38)
 docs: clarify personal branch workflow (#15)
-chore: upgrade handlebars to v4.7.8 (#29)
-refactor: extract date formatting into helper (#33)
+chore: upgrade handlebars to v4.7.8
+refactor: extract date formatting into helper
 ```
 
 ## PR titles

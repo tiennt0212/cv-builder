@@ -27,13 +27,17 @@ These are created off `canary` and deleted after merging.
 | `test/[name]` | Test additions or fixes only |
 | `ci/[name]` | CI/CD workflow changes |
 
-**Issue-linked branch naming:** use `<type>/issue-N-short-description` — no `#` in branch names (breaks some tooling).
+**Issue-linked branch naming:** use `<type>/#N-short-description`. Quote the branch name in shell commands since `#` is a shell comment character.
 
-- `feat/issue-8-deterministic-renderers` ✅
-- `chore/issue-21-skill-frontmatter` ✅
-- `chore/#21-skill-frontmatter-fields` ❌
+- `feat/#42-add-pdf-export` ✅
+- `chore/#21-skill-frontmatter` ✅
+- `feat/issue-42-add-pdf-export` ❌ (use `#N`, not the word `issue`)
 
-Rules: lowercase, hyphen-separated, no special characters (`#`, `@`, spaces).
+```bash
+git checkout -b 'chore/#28-git-conventions'
+```
+
+Rules: lowercase, hyphen-separated. No `@` or spaces.
 
 ### Exploratory and archive branches
 
@@ -46,34 +50,7 @@ Rules: lowercase, hyphen-separated, no special characters (`#`, `@`, spaces).
 
 ## Commit message convention
 
-Format:
-
-```
-<type>[!]: <short description> [(#N)]
-
-[optional body]
-
-[optional footer(s)]
-```
-
-**Types:** `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `style`, `perf`
-
-**Rules:**
-- Subject line: lowercase, no trailing period, ≤ 72 characters
-- Issue reference: `(#N)` at the end of the subject line — no `issue` word
-- Breaking change: append `!` to the type (`feat!:`) or add `BREAKING CHANGE:` in the footer
-
-**Examples:**
-
-```
-feat: add pdf export option (#42)
-fix!: remove deprecated render-cv flags (#38)
-docs: clarify personal branch workflow (#15)
-chore: upgrade handlebars to v4.7.8 (#29)
-refactor: extract date formatting into helper (#33)
-```
-
-PR titles follow the same format — they become the merge commit subject.
+Follow the format defined in [CONTRIBUTING.md — Commit messages](CONTRIBUTING.md#commit-messages). PR titles follow the same format — they become the merge commit subject.
 
 ---
 
