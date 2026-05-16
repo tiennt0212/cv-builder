@@ -22,6 +22,22 @@ These are created off `canary` and deleted after merging.
 | `feat/[name]` | New features |
 | `fix/[name]` | Bug fixes |
 | `docs/[name]` | Documentation-only changes |
+| `chore/[name]` | Maintenance tasks (deps, config, tooling) |
+| `refactor/[name]` | Code restructuring without behaviour change |
+| `test/[name]` | Test additions or fixes only |
+| `ci/[name]` | CI/CD workflow changes |
+
+**Issue-linked branch naming:** use `<type>/#N-short-description`. Quote the branch name in shell commands since `#` is a shell comment character.
+
+- `feat/#42-add-pdf-export` ✅
+- `chore/#21-skill-frontmatter` ✅
+- `feat/issue-42-add-pdf-export` ❌ (use `#N`, not the word `issue`)
+
+```bash
+git checkout -b 'chore/#28-git-conventions'
+```
+
+Rules: lowercase, hyphen-separated. No `@` or spaces.
 
 ### Exploratory and archive branches
 
@@ -29,6 +45,12 @@ These are created off `canary` and deleted after merging.
 |--------|---------|
 | `dev/[name]` | Experimental work — proof of concept, spikes. May never merge. |
 | `archive/[name]` | Frozen historical snapshots. Never merge back. |
+
+---
+
+## Commit message convention
+
+Follow the format defined in [CONTRIBUTING.md — Commit messages](CONTRIBUTING.md#commit-messages). PR titles follow the same format — they become the merge commit subject.
 
 ---
 
