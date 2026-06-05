@@ -11,6 +11,7 @@ This document describes the branching model and release process for maintainers.
 | `master` | Stable. Always releasable. Only receives merges from `canary` immediately before a release. Protected — all changes require a PR. |
 | `canary` | Integration. All PRs target here. The working tip of the project. |
 | `examples` | Example personal data for reference and testing. Never merged into `master` or `canary`. |
+| `gh-pages` | Static landing page (`docs/index.html`) served via GitHub Pages. Never merged into `master` or `canary`. Updated independently. |
 | `personal` | User's own `personal-data/` and `jobs/` commits. Never pushed to the public remote or merged upstream. |
 
 ### Short-lived branches
@@ -149,6 +150,43 @@ The following must remain local on the `personal` branch:
 - `personal-data/` — raw career facts
 - `jobs/` — job-application outputs
 - `agents-ref/archetypes.yaml` — user's target role definitions (populated by `setup-archetypes`)
+
+---
+
+## gh-pages branch
+
+The `gh-pages` branch holds the project landing page (`docs/index.html`) served via GitHub Pages. It is **never merged into `canary` or `master`** — its entire purpose is to exist as a separate public-facing branch so that users who fork or clone the repo do not inherit the original repo's marketing page.
+
+### GitHub Pages setup (one-time)
+
+In the repo's GitHub settings: `Settings → Pages → Source: Deploy from a branch → Branch: gh-pages, Folder: /docs`. No GitHub Actions workflow is required.
+
+### Updating the landing page
+
+```bash
+git checkout gh-pages
+# edit docs/index.html
+git add docs/index.html
+git commit -m "docs: update landing page"
+git push origin gh-pages
+```
+
+### After a toolkit release
+
+Rebase `gh-pages` onto `master` after each release so it stays current with any toolkit files that may have changed (e.g. `docs/` folder structure):
+
+```bash
+git fetch origin
+git checkout gh-pages
+git rebase origin/master
+git push origin gh-pages --force-with-lease
+```
+
+### What must never land on gh-pages
+
+- `personal-data/` — raw career facts
+- `jobs/` — job-application outputs
+- `agents-ref/archetypes.yaml` — user's target role definitions
 
 ---
 

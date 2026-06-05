@@ -18,6 +18,7 @@ Each user uses skills to maintain a structured dataset of their own work experie
 - `.agents/skills/` — symlink to `.claude/skills/`; read by all other Agent Skills-compatible agents (Cursor, Gemini CLI, Codex, etc.).
 - `themes/<name>/` — theme assets used by the deterministic renderers. CV themes ship `template.hbs` + `style.css`; letter themes ship `letter.hbs` + `letter.css`.
 - `bin/render-cv`, `bin/render-letter` — Node.js CLI renderers. See **Rendering** below.
+- `docs/index.html` — static landing page for GitHub Pages. Lives on the `gh-pages` branch (never merged into `canary`/`master`). Edit only when on that branch.
 
 ## Data architecture
 
@@ -80,6 +81,8 @@ Skill files live in `.claude/skills/[skill-name]/SKILL.md` (also accessible via 
 ## Branch hygiene for personal data
 
 This is a public repo — pushing `personal-data/`, `jobs/`, or `agents-ref/archetypes.yaml` to `origin` would expose the user's personal information to the internet. Users keep all such commits on a local `personal` branch that is never pushed upstream.
+
+The `gh-pages` branch is also long-lived and public — never commit `personal-data/`, `jobs/`, or `agents-ref/archetypes.yaml` there.
 
 Surface this guidance proactively when the user is about to make their first data commit, or when they ask about git workflow:
 - Create `personal` branch once after cloning: `git checkout -b personal`
