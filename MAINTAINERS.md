@@ -11,6 +11,7 @@ This document describes the branching model and release process for maintainers.
 | `master` | Stable. Always releasable. Only receives merges from `canary` immediately before a release. Protected — all changes require a PR. |
 | `canary` | Integration. All PRs target here. The working tip of the project. |
 | `examples` | Example personal data for reference and testing. Never merged into `master` or `canary`. |
+| `gh-pages` | Static landing page (`docs/index.html`) served via GitHub Pages. Never merged into `master` or `canary`. Updated independently. |
 | `personal` | User's own `personal-data/` and `jobs/` commits. Never pushed to the public remote or merged upstream. |
 
 ### Short-lived branches
@@ -22,6 +23,22 @@ These are created off `canary` and deleted after merging.
 | `feat/[name]` | New features |
 | `fix/[name]` | Bug fixes |
 | `docs/[name]` | Documentation-only changes |
+| `chore/[name]` | Maintenance tasks (deps, config, tooling) |
+| `refactor/[name]` | Code restructuring without behaviour change |
+| `test/[name]` | Test additions or fixes only |
+| `ci/[name]` | CI/CD workflow changes |
+
+**Issue-linked branch naming:** use `<type>/#N-short-description`. Quote the branch name in shell commands since `#` is a shell comment character.
+
+- `feat/#42-add-pdf-export` ✅
+- `chore/#21-skill-frontmatter` ✅
+- `feat/issue-42-add-pdf-export` ❌ (use `#N`, not the word `issue`)
+
+```bash
+git checkout -b 'chore/#28-git-conventions'
+```
+
+Rules: lowercase, hyphen-separated. No `@` or spaces.
 
 ### Exploratory and archive branches
 
@@ -29,6 +46,12 @@ These are created off `canary` and deleted after merging.
 |--------|---------|
 | `dev/[name]` | Experimental work — proof of concept, spikes. May never merge. |
 | `archive/[name]` | Frozen historical snapshots. Never merge back. |
+
+---
+
+## Commit message convention
+
+Follow the format defined in [CONTRIBUTING.md — Commit messages](CONTRIBUTING.md#commit-messages). PR titles follow the same format — they become the merge commit subject.
 
 ---
 
@@ -53,6 +76,8 @@ canary ──► master ──► tag ──► gh release
    This is an administrative merge, not a code review — no approval needed. Its purpose is to satisfy the branch protection rule and leave a clear merge commit in `master`'s history marking exactly when each release landed. Do not squash it: the merge commit is the record.
 
    After this step, `master` must reflect exactly the code being released — the release commit lives here, not on `canary`.
+
+   When merging a PR that modifies a skill file, bump `metadata.version` in that skill's frontmatter as part of the merge commit.
 
 2. **Rebase long-lived branches onto `master`**
 
@@ -128,6 +153,43 @@ The following must remain local on the `personal` branch:
 
 ---
 
+## gh-pages branch
+
+The `gh-pages` branch holds the project landing page (`docs/index.html`) served via GitHub Pages. It is **never merged into `canary` or `master`** — its entire purpose is to exist as a separate public-facing branch so that users who fork or clone the repo do not inherit the original repo's marketing page.
+
+### GitHub Pages setup (one-time)
+
+In the repo's GitHub settings: `Settings → Pages → Source: Deploy from a branch → Branch: gh-pages, Folder: /docs`. No GitHub Actions workflow is required.
+
+### Updating the landing page
+
+```bash
+git checkout gh-pages
+# edit docs/index.html
+git add docs/index.html
+git commit -m "docs: update landing page"
+git push origin gh-pages
+```
+
+### After a toolkit release
+
+Rebase `gh-pages` onto `master` after each release so it stays current with any toolkit files that may have changed (e.g. `docs/` folder structure):
+
+```bash
+git fetch origin
+git checkout gh-pages
+git rebase origin/master
+git push origin gh-pages --force-with-lease
+```
+
+### What must never land on gh-pages
+
+- `personal-data/` — raw career facts
+- `jobs/` — job-application outputs
+- `agents-ref/archetypes.yaml` — user's target role definitions
+
+---
+
 ## Semantic versioning
 
 | Change type | Version bump |
@@ -137,3 +199,5 @@ The following must remain local on the `personal` branch:
 | Bug fix, docs, refactor | Patch `0.0.x` |
 
 Pre-release qualifiers: `v1.1.0-beta.1`, `v1.1.0-rc.1`.
+
+Skill files carry their own `metadata.version` that follows the same rules, tracking the skill's change history independently of the toolkit version. The `metadata.introduced_in` field records the first toolkit release tag that shipped the skill — set it once at introduction and never change it.

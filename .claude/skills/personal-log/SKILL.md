@@ -11,6 +11,15 @@ description: >
   "add to my data", "import my CV", "I have an old CV", "extract from my resume",
   or provide a file path / paste a large block of CV-formatted text.
   Do NOT trigger for CV generation (use /draft-cv) or rendering (use ./bin/render-cv).
+license: AGPL-3.0
+compatibility: >
+  Compatible with any Agent Skills-aware runtime that supports file-based skill activation
+  and write access to the working directory.
+metadata:
+  author: tiennt0212
+  version: 1.2.1
+  introduced_in: v1.0.0
+allowed-tools: Read Write Edit Bash(find:*)
 ---
 
 # Personal Log — Career Data Manager

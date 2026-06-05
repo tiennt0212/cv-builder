@@ -8,6 +8,15 @@ description: >
   Trigger when the user says "/lint-toolkit", "audit the toolkit", "check the skills",
   "validate toolkit files", or "are the skills consistent".
   Do NOT trigger for user data issues — use /lint-data for personal-data/ validation.
+license: AGPL-3.0
+compatibility: >
+  Compatible with any Agent Skills-aware runtime that supports file-based skill activation.
+  Does not write or modify files.
+metadata:
+  author: tiennt0212
+  version: 1.3.1
+  introduced_in: v1.0.0
+allowed-tools: Read Bash(find:*) Bash(grep:*)
 ---
 
 # Lint Toolkit — cv-builder Integrity Validator
@@ -54,6 +63,11 @@ Read every `.claude/skills/*/SKILL.md`.
 |-------|----------|-------------|
 | `name` field present | ERROR | Skill cannot be discovered without a name |
 | `description` field present | ERROR | Used by the AI agent to decide when to invoke the skill |
+| `license` field present | WARN | Downstream users and agent runtimes need to know usage terms |
+| `compatibility` field present | WARN | Without this, agents in other environments may attempt to run skills with unsupported features |
+| `allowed-tools` field present | WARN | Runtimes use this to sandbox tool access; missing may cause errors on strict runtimes |
+| `metadata.author` field present | INFO | Identifies who maintains the skill; helps consumers know who to contact |
+| `metadata.version` field present | INFO | Without a version, consumers cannot detect breaking changes between releases |
 | Trigger conditions in description | WARN | No "Trigger when" or "Use this skill when" → inconsistent invocation |
 | "Do NOT trigger" guard present | INFO | Prevents overlap between similar-purpose skills |
 

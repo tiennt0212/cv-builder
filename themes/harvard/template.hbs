@@ -19,10 +19,10 @@
     <div class="cv-name">{{contact.name}}</div>
     <div class="cv-contact">
       {{#if contact.location}}<span>{{contact.location}}</span>{{/if}}
-      {{#if contact.email}}<span><a href="mailto:{{contact.email}}">{{contact.email}}</a></span>{{/if}}
+      {{#if contact.email}}<span><a href="mailto:{{contact.email}}" target="_blank" rel="noopener noreferrer">{{contact.email}}</a></span>{{/if}}
       {{#if contact.phone}}<span>{{contact.phone}}</span>{{/if}}
-      {{#if contact.linkedin}}<span><a href="https://linkedin.com/in/{{contact.linkedin}}">LinkedIn: {{contact.linkedin}}</a></span>{{/if}}
-      {{#if contact.github}}<span><a href="https://github.com/{{contact.github}}">GitHub: {{contact.github}}</a></span>{{/if}}
+      {{#if contact.linkedin}}<span><a href="https://linkedin.com/in/{{contact.linkedin}}" target="_blank" rel="noopener noreferrer">LinkedIn: {{contact.linkedin}}</a></span>{{/if}}
+      {{#if contact.github}}<span><a href="https://github.com/{{contact.github}}" target="_blank" rel="noopener noreferrer">GitHub: {{contact.github}}</a></span>{{/if}}
     </div>
   </div>
 
@@ -111,7 +111,7 @@
     {{#if (eq kind "certification")}}
     <div class="bottom-entry">
       <div class="bottom-row">
-        <span class="bottom-title">{{#if url}}<a href="{{url}}">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
+        <span class="bottom-title">{{#if url}}<a href="{{url}}" target="_blank" rel="noopener noreferrer">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
         {{#if date}}<span class="bottom-right">{{date}}</span>{{/if}}
       </div>
       {{#if issuer}}<div class="bottom-row"><span>{{md issuer}}</span></div>{{/if}}
@@ -122,7 +122,7 @@
     {{#if (eq kind "award")}}
     <div class="bottom-entry">
       <div class="bottom-row">
-        <span class="bottom-title">{{#if url}}<a href="{{url}}">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
+        <span class="bottom-title">{{#if url}}<a href="{{url}}" target="_blank" rel="noopener noreferrer">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
         {{#if date}}<span class="bottom-right">{{date}}</span>{{/if}}
       </div>
       {{#if issuer}}<div class="bottom-row"><span>{{md issuer}}</span></div>{{/if}}
@@ -133,7 +133,7 @@
     {{#if (eq kind "publication")}}
     <div class="bottom-entry">
       <div class="bottom-row">
-        <span class="bottom-title">{{#if url}}<a href="{{url}}">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
+        <span class="bottom-title">{{#if url}}<a href="{{url}}" target="_blank" rel="noopener noreferrer">{{md title}}</a>{{else}}{{md title}}{{/if}}</span>
         {{#if date}}<span class="bottom-right">{{date}}</span>{{/if}}
       </div>
       {{#if venue}}<div class="bottom-row"><span>{{md venue}}</span></div>{{/if}}
